@@ -50,11 +50,13 @@ public class login extends Application {
         input.setY(105);
         input.setWidth(400);
         input.setHeight(450);
+        input.setArcWidth(20); // Set the width of the corner arc
+        input.setArcHeight(20);
         input.setFill(Color.rgb(246,138,223));
         input_pane.getChildren().addAll(input);
         Label log_in=new Label("Login");
         log_in.setLayoutX(270);
-        log_in.setLayoutY(110);
+        log_in.setLayoutY(120);
         log_in.setStyle("-fx-background-color:#F68ADF; -fx-text-fill:#2C165C; -fx-font-size:30");
         Label username=new Label("Username or Email Address");
         username.setLayoutX(180);
@@ -105,7 +107,9 @@ public class login extends Application {
         forgot_btn.setStyle("-fx-background-color:#F68ADF; -fx-text-fill:#2C165C; -fx-font-size:15");
         forgot_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-
+                Translate tp = new Translate();
+                tp.setX(200);
+                input_pane.getTransforms().addAll(tp);
 
             }
         });
