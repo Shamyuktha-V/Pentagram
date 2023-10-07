@@ -1,9 +1,7 @@
 package com.example.pentagram;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundRepeat;
@@ -21,15 +20,10 @@ import javafx.scene.control.Button;
 import javafx.scene.shape.Line;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.scene.transform.Rotate;
-import javafx.util.Duration;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
+
 public class login extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -49,21 +43,7 @@ public class login extends Application {
                         false
                 )
         );
-        Image signup_backgroundImage = new Image("D:/Studies/sem5/java/pentagram/pics/signup.JPG");
-        BackgroundImage signup_background = new BackgroundImage(
-                signup_backgroundImage,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                null,
-                new BackgroundSize(
-                        BackgroundSize.AUTO,
-                        BackgroundSize.AUTO,
-                        false,
-                        false,
-                        true,
-                        false                      
-                )
-        );
+
         Image input_backgroundImage = new Image("file:D:/Studies/sem5/java/pentagram/pics/login_rect.jpg");
         ImagePattern input_backgroundPattern = new ImagePattern(input_backgroundImage);
         Pane root = new Pane();
@@ -127,26 +107,199 @@ public class login extends Application {
         login_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 primaryStage.setTitle("Home page");
-                Pane home_page = new Pane();
-                Scene feed_page = new Scene(home_page,600,750,Color.BLUEVIOLET);
-                Rectangle rect = new Rectangle();
-                rect.setFill(Color.BLUEVIOLET);
-                rect.setHeight(100);
-                rect.setWidth(200);
-                home_page.getChildren().add(rect);
-                primaryStage.setScene(feed_page);
-                primaryStage.setTitle("Sign up page");
-                Pane signup_pane = new Pane();
-                signup_pane.setBackground(new Background(signup_background));
-                Scene signup_scene = new Scene(signup_pane,1300,750);
+                Pane home_pane = new Pane();
+                home_pane.setStyle("-fx-background-color: #E5E4E2;");
+                Scene home_scene = new Scene(home_pane,1300,750);
+
                 Rectangle details = new Rectangle();
-                details.setWidth(750);
-                details.setHeight(550);
-                details.setFill(input_backgroundPattern);
-                details.setX(500);
-                details.setY(100);
-                signup_pane.getChildren().addAll(details);
-                primaryStage.setScene(signup_scene);
+                details.setWidth(300);
+                details.setHeight(750);
+                details.setFill(Color.WHITE);
+                details.setX(0);
+                details.setY(0);
+
+
+                Image instag_logo = new Image("D:/Studies/sem5/java/pentagram/pics/insta_logo.PNG");
+                Image home = new Image("D:/Studies/sem5/java/pentagram/pics/home.PNG");
+                Image like = new Image("D:/Studies/sem5/java/pentagram/pics/like.JPG");
+                Image add_post = new Image("D:/Studies/sem5/java/pentagram/pics/add_post.PNG");
+                Image comment = new Image("D:/Studies/sem5/java/pentagram/pics/comment.PNG");
+                Image search = new Image("D:/Studies/sem5/java/pentagram/pics/search.PNG");
+                Image settings = new Image("D:/Studies/sem5/java/pentagram/pics/settings.PNG");
+                Image saved = new Image("D:/Studies/sem5/java/pentagram/pics/saved.PNG");
+                Image notification = new Image("D:/Studies/sem5/java/pentagram/pics/notification.PNG");
+                Image profile = new Image("D:/Studies/sem5/java/pentagram/pics/profile.PNG");
+                Image back_image = new Image("D:/Studies/sem5/java/pentagram/pics/back.PNG");
+                Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.PNG");
+
+
+                ImageView imageView_instag_logo = new ImageView(instag_logo);
+                ImageView imageView_home = new ImageView(home);
+                ImageView imageView_like = new ImageView(like);
+                ImageView imageView_add_post = new ImageView(add_post);
+                ImageView imageView_comment = new ImageView(comment);
+                ImageView imageView_search = new ImageView(search);
+                ImageView imageView_settings = new ImageView(settings);
+                ImageView imageView_saved = new ImageView(saved);
+                ImageView imageView_notification = new ImageView(notification);
+                ImageView imageView_profile = new ImageView(profile);
+                ImageView imageView_back = new ImageView(back_image);
+                ImageView imageView_next = new ImageView(next_image);
+
+
+                int desiredWidth=40;
+                int desiredHeight=40;
+
+
+                imageView_instag_logo.setFitWidth(desiredWidth);
+                imageView_instag_logo.setFitHeight(desiredHeight);
+                imageView_home.setFitWidth(desiredWidth);
+                imageView_home.setFitHeight(desiredHeight);
+                imageView_like.setFitWidth(desiredWidth);
+                imageView_like.setFitHeight(desiredHeight);
+                imageView_add_post.setFitWidth(desiredWidth);
+                imageView_add_post.setFitHeight(desiredHeight);
+                imageView_comment.setFitWidth(desiredWidth);
+                imageView_comment.setFitHeight(desiredHeight);
+                imageView_search.setFitWidth(desiredWidth);
+                imageView_search.setFitHeight(desiredHeight);
+                imageView_settings.setFitWidth(desiredWidth);
+                imageView_settings.setFitHeight(desiredHeight);
+                imageView_saved.setFitWidth(desiredWidth);
+                imageView_saved.setFitHeight(desiredHeight);
+                imageView_notification.setFitWidth(desiredWidth);
+                imageView_notification.setFitHeight(desiredHeight);
+                imageView_profile.setFitWidth(desiredWidth);
+                imageView_profile.setFitHeight(desiredHeight);
+                imageView_add_post.setFitWidth(desiredWidth);
+                imageView_add_post.setFitHeight(desiredHeight);
+                imageView_next.setFitWidth(50);
+                imageView_next.setFitHeight(50);
+                imageView_back.setFitWidth(50);
+                imageView_back.setFitHeight(50);
+
+
+                imageView_instag_logo.setLayoutX(30);
+                imageView_instag_logo.setLayoutY(30);
+                imageView_home.setLayoutX(40);
+                imageView_home.setLayoutY(340);
+                imageView_search.setLayoutX(40);
+                imageView_search.setLayoutY(400);
+                imageView_saved.setLayoutX(40);
+                imageView_saved.setLayoutY(460);
+                imageView_notification.setLayoutX(40);
+                imageView_notification.setLayoutY(520);
+                imageView_settings.setLayoutX(40);
+                imageView_settings.setLayoutY(580);
+                imageView_profile.setLayoutX(40);
+                imageView_profile.setLayoutY(640);
+                imageView_add_post.setLayoutX(40);
+                imageView_add_post.setLayoutY(700);
+
+
+
+                Label insta=new Label("Pentagram");
+                insta.setLayoutX(80);
+                insta.setLayoutY(35);
+                insta.setStyle(" -fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:20; -fx-font-family:Georgia; -fx-font-weight:bold");
+
+                Button feed = new Button("Feed");
+                feed.setLayoutX(80);
+                feed.setLayoutY(345);
+                feed.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button explore = new Button("Explore");
+                explore.setLayoutX(80);
+                explore.setLayoutY(405);
+                explore.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button collection = new Button("Collection");
+                collection.setLayoutX(80);
+                collection.setLayoutY(465);
+                collection.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button notification_btn = new Button("Notification");
+                notification_btn.setLayoutX(80);
+                notification_btn.setLayoutY(525);
+                notification_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button settings_btn = new Button("Settings");
+                settings_btn.setLayoutX(80);
+                settings_btn.setLayoutY(585);
+                settings_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button profile_btn = new Button("Profile");
+                profile_btn.setLayoutX(80);
+                profile_btn.setLayoutY(645);
+                profile_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Button post = new Button("New post");
+                post.setLayoutX(80);
+                post.setLayoutY(705);
+                post.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                Rectangle post1 = new Rectangle();
+                post1.setWidth(300);
+                post1.setHeight(300);
+                post1.setFill(Color.WHITE);
+                post1.setX(325);
+                post1.setY(25);
+
+                Rectangle post2 = new Rectangle();
+                post2.setWidth(300);
+                post2.setHeight(300);
+                post2.setFill(Color.WHITE);
+                post2.setX(650);
+                post2.setY(25);
+
+                Rectangle post3 = new Rectangle();
+                post3.setWidth(300);
+                post3.setHeight(300);
+                post3.setFill(Color.WHITE);
+                post3.setX(975);
+                post3.setY(25);
+
+                Rectangle post4 = new Rectangle();
+                post4.setWidth(300);
+                post4.setHeight(300);
+                post4.setFill(Color.WHITE);
+                post4.setX(325);
+                post4.setY(350);
+
+                Rectangle post5 = new Rectangle();
+                post5.setWidth(300);
+                post5.setHeight(300);
+                post5.setFill(Color.WHITE);
+                post5.setX(650);
+                post5.setY(350);
+
+                Rectangle post6 = new Rectangle();
+                post6.setWidth(300);
+                post6.setHeight(300);
+                post6.setFill(Color.WHITE);
+                post6.setX(975);
+                post6.setY(350);
+
+
+                Button exit_btn = new Button();
+                exit_btn.setGraphic(imageView_back);
+                exit_btn.setLayoutX(325);
+                exit_btn.setLayoutY(680);
+
+                Button next_post_btn = new Button("");
+                next_post_btn.setGraphic(imageView_next);
+                next_post_btn.setLayoutX(1210);
+                next_post_btn.setLayoutY(680);
+
+                home_pane.getChildren().addAll(details,imageView_instag_logo,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,explore,collection,post,notification_btn,settings_btn,profile_btn,insta,post1,post2,post3,post4,post5,post6,exit_btn,next_post_btn);
+                primaryStage.setScene(home_scene);
             }
         });
         Button forgot_btn = new Button("Forgot password?");
@@ -235,20 +388,6 @@ public class login extends Application {
 
                 forgot_pane.getChildren().addAll(forgot_password,school_input,school,nickname_input,nick_name,change_password,line3,line4,back_forgot);
                 root.getChildren().add(forgot_pane);
-                forgot_pane.setVisible(!forgot_pane.isVisible());
-                Rotate rotate_forget = new Rotate(0, input.getWidth() / 2, input.getHeight() / 2, 0, Rotate.Z_AXIS);
-                input_pane.getTransforms().add(rotate_forget);
-
-
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.ZERO, new KeyValue(rotate_forget.angleProperty(), 0)),
-                        new KeyFrame(Duration.seconds(1), new KeyValue(rotate_forget.angleProperty(), 360, Interpolator.EASE_BOTH))
-                );
-                timeline.setOnFinished(e -> {
-                    forgot_pane.setVisible(!forgot_pane.isVisible());
-                });
-                timeline.play();
-
             }
         });
         Button signup_btn = new Button("Doesn't have an account? Create account");
