@@ -24,7 +24,20 @@
       <artifactId>javafx-fxml</artifactId>
       <version>20</version>
     </dependency>
-                                    
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.1.0</version> <!-- Use the appropriate version -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.opencv</groupId>
+      <artifactId>opencv-java</artifactId>
+      <version>4.8.0</version> <!-- Replace with the desired OpenCV version -->
+    </dependency>
+
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>

@@ -1,11 +1,10 @@
 package com.example.pentagram;
-
+import com.example.pentagram.backend.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import java.io.IOException;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,6 +22,12 @@ import javafx.event.EventHandler;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
+import java.time.LocalDate;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class login extends Application {
     @Override
@@ -327,37 +332,53 @@ public class login extends Application {
                 forgot_password.setLayoutY(120);
                 forgot_password.setStyle("-fx-text-fill:#2C165C; -fx-font-size:25");
 
-                Label school=new Label("Enter first school name");
-                school.setLayoutX(190);
-                school.setLayoutY(180);
+                Label user_forget=new Label("Username");
+                user_forget.setLayoutX(160);
+                user_forget.setLayoutY(180);
+                user_forget.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                TextField user_forget_input=new TextField();
+                user_forget_input.setLayoutX(270);
+                user_forget_input.setLayoutY(180);
+                user_forget_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
+
+                Line line3 = new Line();
+                line3.setStartX(270);
+                line3.setStartY(211);
+                line3.setEndX(455);
+                line3.setEndY(211);
+
+                Label school=new Label("Institution");
+                school.setLayoutX(160);
+                school.setLayoutY(250);
                 school.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
                 TextField school_input=new TextField();
-                school_input.setLayoutX(180);
-                school_input.setLayoutY(220);
+                school_input.setLayoutX(270);
+                school_input.setLayoutY(250);
                 school_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
 
-                Line line3 = new Line();
-                line3.setStartX(150);
-                line3.setStartY(250);
-                line3.setEndX(450);
-                line3.setEndY(250);
+                Line line13 = new Line();
+                line13.setStartX(270);
+                line13.setStartY(280);
+                line13.setEndX(455);
+                line13.setEndY(280);
 
 
-                Label nick_name=new Label("Enter nick name");
-                nick_name.setLayoutX(220);
-                nick_name.setLayoutY(280);
+                Label nick_name=new Label("Nickname");
+                nick_name.setLayoutX(160);
+                nick_name.setLayoutY(320);
                 nick_name.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
                 TextField nickname_input=new TextField();
-                nickname_input.setLayoutX(180);
+                nickname_input.setLayoutX(270);
                 nickname_input.setLayoutY(320);
                 nickname_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
                 Line line4 = new Line();
-                line4.setStartX(150);
+                line4.setStartX(270);
                 line4.setStartY(350);
-                line4.setEndX(450);
+                line4.setEndX(455);
                 line4.setEndY(350);
 
                 Button change_password = new Button("Submit");
@@ -381,12 +402,54 @@ public class login extends Application {
                 change_password.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        root.getChildren().clear();
-                        root.getChildren().add(input_pane);
+                        String user_forget_str =user_forget_input.getText();
+                        String school_str = school_input.getText();
+                        String nick_str = nickname_input.getText();
+                        String res=DatabaseConfiguration.forgot_password(user_forget_str,school_str,nick_str);
+                        if(res.equals("true"))
+                        {
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Verified successfully");
+                            alert.showAndWait();
+                        }
+                        else
+                        {
+                            if(res.equals("nickname"))
+                            {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Nickname is incorrect");
+                            alert.showAndWait();
+                            } else if (res.equals("user")) {
+                                Alert alert = new Alert(AlertType.ERROR);
+                                alert.setTitle("Information Dialog");
+                                alert.setHeaderText(null);
+                                alert.setContentText("User name is incorrect");
+                                alert.showAndWait();
+                            } else if (res.equals("institution")) {
+                                Alert alert = new Alert(AlertType.ERROR);
+                                alert.setTitle("Information Dialog");
+                                alert.setHeaderText(null);
+                                alert.setContentText("institution name is incorrect");
+                                alert.showAndWait();
+                            } else if (res.equals("false")) {
+                                Alert alert = new Alert(AlertType.ERROR);
+                                alert.setTitle("Information Dialog");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Information provided are incorrect");
+                                alert.showAndWait();
+                            }
+                            root.getChildren().clear();
+                            root.getChildren().add(input_pane);
+                        }
+
                     }
                 });
 
-                forgot_pane.getChildren().addAll(forgot_password,school_input,school,nickname_input,nick_name,change_password,line3,line4,back_forgot);
+                forgot_pane.getChildren().addAll(forgot_password,school_input,school,nickname_input,nick_name,change_password,line3,line4,back_forgot,user_forget_input,user_forget,line13);
                 root.getChildren().add(forgot_pane);
             }
         });
@@ -425,6 +488,8 @@ public class login extends Application {
                 mailid_input.setLayoutY(180);
                 mailid_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
+
+
                 Line line5 = new Line();
                 line5.setStartX(270);
                 line5.setStartY(210);
@@ -440,6 +505,8 @@ public class login extends Application {
                 fullname_input.setLayoutX(270);
                 fullname_input.setLayoutY(250);
                 fullname_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
+
 
                 Line line6 = new Line();
                 line6.setStartX(270);
@@ -457,6 +524,8 @@ public class login extends Application {
                 signup_username_input.setLayoutY(320);
                 signup_username_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
 
+
+
                 Line line7 = new Line();
                 line7.setStartX(270);
                 line7.setStartY(350);
@@ -472,6 +541,7 @@ public class login extends Application {
                 signup_password_input.setLayoutX(270);
                 signup_password_input.setLayoutY(390);
                 signup_password_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
 
                 Line line8 = new Line();
                 line8.setStartX(270);
@@ -517,6 +587,7 @@ public class login extends Application {
                         vbox.setLayoutX(270);
                         vbox.setLayoutY(180);
 
+
                         Label bio=new Label("Bio");
                         bio.setLayoutX(160);
                         bio.setLayoutY(250);
@@ -527,20 +598,95 @@ public class login extends Application {
                         bio_input.setLayoutY(250);
                         bio_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
+
                         Line line9 = new Line();
                         line9.setStartX(270);
                         line9.setStartY(280);
                         line9.setEndX(455);
                         line9.setEndY(280);
 
+                        Label insta_dp=new Label("Image path");
+                        insta_dp.setLayoutX(160);
+                        insta_dp.setLayoutY(320);
+                        insta_dp.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                        TextField insta_dp_input=new TextField();
+                        insta_dp_input.setLayoutX(270);
+                        insta_dp_input.setLayoutY(320);
+                        insta_dp_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
+                        Line line10 = new Line();
+                        line10.setStartX(270);
+                        line10.setStartY(350);
+                        line10.setEndX(455);
+                        line10.setEndY(350);
+
+                        Label school_name=new Label("Institution");
+                        school_name.setLayoutX(160);
+                        school_name.setLayoutY(380);
+                        school_name.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                        TextField scl_input=new TextField();
+                        scl_input.setLayoutX(270);
+                        scl_input.setLayoutY(380);
+                        scl_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
+                        Line line11 = new Line();
+                        line11.setStartX(270);
+                        line11.setStartY(410);
+                        line11.setEndX(455);
+                        line11.setEndY(410);
+
+                        Label nickname_label=new Label("Nickname");
+                        nickname_label.setLayoutX(160);
+                        nickname_label.setLayoutY(440);
+                        nickname_label.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                        TextField nick_name_input=new TextField();
+                        nick_name_input.setLayoutX(270);
+                        nick_name_input.setLayoutY(440);
+                        nick_name_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
+                        Line line12 = new Line();
+                        line12.setStartX(270);
+                        line12.setStartY(471);
+                        line12.setEndX(455);
+                        line12.setEndY(471);
+
                         Button next2_btn = new Button("Sign Up");
-                        next2_btn.setLayoutX(265);
-                        next2_btn.setLayoutY(320);
+                        next2_btn.setLayoutX(370);
+                        next2_btn.setLayoutY(500);
                         next2_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
                         next2_btn.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
+
+                                LocalDate dob = datePicker.getValue();
+                                String mailid_str=mailid_input.getText();
+                                String fullname_str=fullname_input.getText();
+                                String signup_username_str=signup_username_input.getText();
+                                String signup_password_str=signup_password_input.getText();
+                                String bio_str=bio_input.getText();
+                                String insta_dp_str=insta_dp_input.getText();
+                                String scl_name_str=scl_input.getText();
+                                String nickname_str=nick_name_input.getText();
+                                if(DatabaseConfiguration.Signup_backend(mailid_str,fullname_str,signup_username_str,signup_password_str,dob,bio_str,insta_dp_str,scl_name_str,nickname_str))
+                                {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Information Dialog");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("User registration successful!");
+                                    alert.showAndWait();
+                                }
+                                else
+                                {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Information Dialog");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("User registration failed");
+                                    alert.showAndWait();
+                                }
                                 root.getChildren().clear();
                                 signup_btn.setText("Doesn't have an account? Create account");
                                 signup_btn.setLayoutX(160);
@@ -549,16 +695,19 @@ public class login extends Application {
                                 input_pane.getChildren().remove(signup_btn);
                                 input_pane.getChildren().add(signup_btn);
                                 root.getChildren().add(input_pane);
+
                             }
+
                         });
 
                         signup_btn.setText("Back");
-                        signup_btn.setLayoutX(265);
-                        signup_btn.setLayoutY(380);
+                        signup_btn.setLayoutX(145);
+                        signup_btn.setLayoutY(500);
                         signup_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
-                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,line9,next2_btn,signup_btn);
+                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,line9,next2_btn,signup_btn,insta_dp_input,insta_dp,line10,school_name,scl_input,line11,nickname_label,line12,nick_name_input);
                         root.getChildren().add(signup2_pane);
+
                     }});
                 Button back_home = new Button("Back");
                 back_home.setLayoutX(175);
