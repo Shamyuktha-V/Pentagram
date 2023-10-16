@@ -37,7 +37,6 @@ public class DatabaseConfiguration {
             preparedStatement.setString(8, scl_name_str);
             preparedStatement.setString(9, nickname_str);
             int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println(rowsAffected);
             if (rowsAffected > 0) {
                 return true;
             }
@@ -101,6 +100,46 @@ public class DatabaseConfiguration {
                 if (resultset != null) {
                     resultset.close();
                 }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "false";
+
+    }
+
+    public static String change_password(String username,String newPassword)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pentagram", "root", "Shamu@123");
+            preparedStatement = connection.prepareStatement("UPDATE user SET password = ? WHERE username = ?");
+            preparedStatement.setString(1, newPassword); // Set the new password
+            preparedStatement.setString(2, username); // Set the username
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                return "true";
+            }
+            else if(rowsUpdated<=0)
+            {
+                return "user";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            // Handle the exception here
+        } finally {
+            // Close the resources in reverse order of their creation
+            try {
                 if (preparedStatement != null) {
                     preparedStatement.close();
                 }

@@ -402,7 +402,7 @@ public class login extends Application {
                 change_password.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        String user_forget_str =user_forget_input.getText();
+                        String user_forget_str = user_forget_input.getText();
                         String school_str = school_input.getText();
                         String nick_str = nickname_input.getText();
                         String res=DatabaseConfiguration.forgot_password(user_forget_str,school_str,nick_str);
@@ -413,6 +413,134 @@ public class login extends Application {
                             alert.setHeaderText(null);
                             alert.setContentText("Verified successfully");
                             alert.showAndWait();
+
+                            Pane forgot_pane_1 = new Pane();
+
+                            Rectangle password_change_1 = new Rectangle();
+                            password_change_1.setX(105);
+                            password_change_1.setY(105);
+                            password_change_1.setWidth(400);
+                            password_change_1.setHeight(450);
+                            password_change_1.setArcWidth(20); // Set the width of the corner arc
+                            password_change_1.setArcHeight(20);
+                            password_change_1.setFill(input_backgroundPattern);
+                            forgot_pane_1.getChildren().addAll(password_change_1);
+
+
+                            Label change_password_label =new Label("Change Password");
+                            change_password_label.setLayoutX(215);
+                            change_password_label.setLayoutY(120);
+                            change_password_label.setStyle("-fx-text-fill:#2C165C; -fx-font-size:25");
+
+                            Label user_change=new Label("Username");
+                            user_change.setLayoutX(200);
+                            user_change.setLayoutY(180);
+                            user_change.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                            TextField user_change_input=new TextField();
+                            user_change_input.setLayoutX(200);
+                            user_change_input.setLayoutY(220);
+                            user_change_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
+
+                            Line line14 = new Line();
+                            line14.setStartX(200);
+                            line14.setStartY(250);
+                            line14.setEndX(385);
+                            line14.setEndY(250);
+
+                            Label new_password=new Label("New Password");
+                            new_password.setLayoutX(200);
+                            new_password.setLayoutY(260);
+                            new_password.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                            PasswordField new_password_input=new PasswordField();
+                            new_password_input.setLayoutX(200);
+                            new_password_input.setLayoutY(300);
+                            new_password_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
+
+                            Line line15 = new Line();
+                            line15.setStartX(200);
+                            line15.setStartY(330);
+                            line15.setEndX(385);
+                            line15.setEndY(330);
+
+                            Label confirm_password=new Label("Confirm password");
+                            confirm_password.setLayoutX(200);
+                            confirm_password.setLayoutY(340);
+                            confirm_password.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                            PasswordField confirm_password_input=new PasswordField();
+                            confirm_password_input.setLayoutX(200);
+                            confirm_password_input.setLayoutY(380);
+                            confirm_password_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
+                            Line line16 = new Line();
+                            line16.setStartX(200);
+                            line16.setStartY(410);
+                            line16.setEndX(385);
+                            line16.setEndY(410);
+
+                            Button change_password_btn = new Button("Submit");
+                            change_password_btn.setLayoutX(265);
+                            change_password_btn.setLayoutY(440);
+                            change_password_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+
+                            change_password_btn.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+
+                                    String user_change_str =user_change_input.getText();
+                                    String new_password_str = new_password_input.getText();
+                                    String confirm_password_str = confirm_password_input.getText();
+                                    if(confirm_password_str.equals(new_password_str)) {
+                                        String res=DatabaseConfiguration.change_password(user_change_str, new_password_str);
+                                        if (res.equals("true")) {
+                                            Alert alert = new Alert(AlertType.INFORMATION);
+                                            alert.setTitle("Information Dialog");
+                                            alert.setHeaderText(null);
+                                            alert.setContentText("Password changed successfully");
+                                            alert.showAndWait();
+                                            root.getChildren().clear();
+                                            root.getChildren().add(input_pane);
+                                        }
+                                        else if(res.equals("false"))
+                                        {
+                                            Alert alert = new Alert(AlertType.ERROR);
+                                            alert.setTitle("Retry");
+                                            alert.setHeaderText(null);
+                                            alert.setContentText("We are encountering issue in database,Please try again!");
+                                            alert.showAndWait();
+                                            root.getChildren().clear();
+                                            root.getChildren().add(input_pane);
+                                        }
+                                        else if(res.equals("user"))
+                                        {
+                                            Alert alert = new Alert(AlertType.ERROR);
+                                            alert.setTitle("Information Dialog");
+                                            alert.setHeaderText(null);
+                                            alert.setContentText("Username is incorrect");
+                                            alert.showAndWait();
+                                            user_change_input.clear();
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Alert alert = new Alert(AlertType.ERROR);
+                                        alert.setTitle("Information Dialog");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("New password and confirm password doesn't matches");
+                                        alert.showAndWait();
+                                        new_password_input.clear();
+                                        confirm_password_input.clear();
+
+                                    }
+
+                                }
+                            });
+
+                            forgot_pane_1.getChildren().addAll(change_password_label,user_change,user_change_input,line14,new_password,new_password_input,line15,confirm_password,confirm_password_input,line16,change_password_btn);
+                            root.getChildren().add(forgot_pane_1);
                         }
                         else
                         {
@@ -423,27 +551,32 @@ public class login extends Application {
                             alert.setHeaderText(null);
                             alert.setContentText("Nickname is incorrect");
                             alert.showAndWait();
+                            nickname_input.clear();
                             } else if (res.equals("user")) {
                                 Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("Information Dialog");
                                 alert.setHeaderText(null);
                                 alert.setContentText("User name is incorrect");
                                 alert.showAndWait();
+                                user_forget_input.clear();
+                                nickname_input.clear();
+                                school_input.clear();
                             } else if (res.equals("institution")) {
                                 Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("Information Dialog");
                                 alert.setHeaderText(null);
                                 alert.setContentText("institution name is incorrect");
                                 alert.showAndWait();
+                                school_input.clear();
                             } else if (res.equals("false")) {
                                 Alert alert = new Alert(AlertType.ERROR);
                                 alert.setTitle("Information Dialog");
                                 alert.setHeaderText(null);
                                 alert.setContentText("Information provided are incorrect");
                                 alert.showAndWait();
+                                nickname_input.clear();
+                                school_input.clear();
                             }
-                            root.getChildren().clear();
-                            root.getChildren().add(input_pane);
                         }
 
                     }
@@ -681,10 +814,10 @@ public class login extends Application {
                                 }
                                 else
                                 {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Information Dialog");
+                                    Alert alert = new Alert(AlertType.ERROR);
+                                    alert.setTitle("Retry");
                                     alert.setHeaderText(null);
-                                    alert.setContentText("User registration failed");
+                                    alert.setContentText("We are encountering issue in database,Please try again!");
                                     alert.showAndWait();
                                 }
                                 root.getChildren().clear();
