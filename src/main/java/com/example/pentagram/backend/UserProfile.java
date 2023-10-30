@@ -1,9 +1,12 @@
 package com.example.pentagram.backend;
 
-import java.time.LocalDate;
 import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
-public class User {
+import java.time.LocalDate;
+
+class User {
     private int id;
     private String username;
     private String email;
@@ -101,20 +104,32 @@ public class User {
     }
 }
 
-class ProfileData {
-    private Image profilePhoto;
-    private String username;
+public class UserProfile {
+    private final String profilePhoto;
+    private final String username;
+    private final Button viewProfile;
+    private final Button follow;
 
-    public ProfileData(Image profilePhoto, String username) {
+    public UserProfile(String profilePhoto, String username, Button viewProfile, Button follow) {
         this.profilePhoto = profilePhoto;
         this.username = username;
+        this.viewProfile = viewProfile;
+        this.follow = follow;
     }
 
-    public Image getProfilePhoto() {
+    public String getProfilePhoto() {
         return profilePhoto;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public Button getViewProfile() {
+        return viewProfile;
+    }
+
+    public Button getFollow() {
+        return follow;
     }
 }

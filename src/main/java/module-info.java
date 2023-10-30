@@ -6,5 +6,7 @@ module com.example.pentagram {
 
 
     opens com.example.pentagram to javafx.fxml;
+    opens com.example.pentagram.backend to javafx.base;
+
     exports com.example.pentagram.frontend;
 }

@@ -1,13 +1,13 @@
 package com.example.pentagram.frontend;
 import com.example.pentagram.backend.*;
 import javafx.application.Application;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -15,16 +15,17 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.Button;
 import javafx.scene.shape.Line;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.DatePicker;
 import javafx.scene.layout.VBox;
-import java.time.LocalDate;
 
-import javafx.scene.control.Alert;
+import java.io.File;
+import java.time.LocalDate;
+import java.util.List;
+import javafx.util.Callback;
+
 import javafx.scene.control.Alert.AlertType;
 
 public class login extends Application {
@@ -134,7 +135,6 @@ public class login extends Application {
                     home_pane.setStyle("-fx-background-color: #E5E4E2;");
                     Scene home_scene = new Scene(home_pane,1300,750);
 
-                    Pane insta_option = new Pane();
                     Pane post_pane = new Pane();
 
                     Rectangle details = new Rectangle();
@@ -158,7 +158,7 @@ public class login extends Application {
                     Image notification = new Image("D:/Studies/sem5/java/pentagram/pics/notification.PNG");
                     Image profile = new Image("D:/Studies/sem5/java/pentagram/pics/profile.PNG");
                     Image back_image = new Image("D:/Studies/sem5/java/pentagram/pics/back.PNG");
-                    Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.PNG");
+                    Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.png");
 
 
                     ImageView imageView_instag_logo = new ImageView(instag_logo);
@@ -251,11 +251,70 @@ public class login extends Application {
 
                     explore.setOnAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent Event) {
+                            Alert alert = new Alert(AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Successfully logged in");
+                            alert.showAndWait();
                            Pane explore_pane = new Pane();
                            explore_pane.setMaxHeight(700);
                            explore_pane.setMaxWidth(700);
                            explore_pane.setLayoutX(300);
                            explore_pane.setLayoutY(25);
+                           TableView<com.example.pentagram.backend.UserProfile> tableView = new TableView<>();
+                            /*TableColumn<com.example.pentagram.backend.UserProfile, ImageView> profilePhotoColumn = new TableColumn<>("Profile Photo");
+                            profilePhotoColumn.setCellValueFactory(new PropertyValueFactory<>("profilePhoto"));
+                               */
+                            /*TableColumn<UserProfile, ImageView> profilePhotoColumn = new TableColumn<>("Profile Photo");
+                            profilePhotoColumn.setCellFactory(param -> new TableCell<UserProfile, ImageView>() {
+                                private final ImageView imageView = new ImageView();
+
+                                @Override
+                                protected void updateItem(ImageView item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                    if (empty || item == null) {
+                                        setGraphic(null);
+                                    } else {
+                                        // Assuming you have the UserProfile object associated with the cell
+                                        UserProfile userProfile = getTableView().getItems().get(getIndex());
+                                        String imagePath = userProfile.getProfilePhoto();
+                                        Image image = new Image(new File(imagePath).toURI().toString());
+                                        imageView.setImage(image);
+                                        setGraphic(imageView);
+                                    }
+                                }
+                            });
+
+                            profilePhotoColumn.setCellValueFactory(new PropertyValueFactory<>("profilePhoto"));*/
+
+
+
+                            //With these changes, your code should correctly load and display profile photos from the file paths stored in your database. Make sure the file paths in your database are accurate and that the image files exist at those locations.
+
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, String> usernameColumn = new TableColumn<>("Username");
+                            usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> viewProfileColumn = new TableColumn<>("View Profile");
+                            viewProfileColumn.setCellValueFactory(new PropertyValueFactory<>("viewProfile"));
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> followColumn = new TableColumn<>("Follow");
+                            followColumn.setCellValueFactory(new PropertyValueFactory<>("follow"));
+
+                            tableView.getColumns().addAll(usernameColumn, viewProfileColumn, followColumn);
+
+                            // Fetch user data from the database and populate the table view
+                            List<UserProfile> userProfiles = DatabaseConfiguration_feedpage.fetchUserDataFromDatabase();
+                            userProfiles.forEach(userProfile -> {
+                                System.out.println("Username: " + userProfile.getUsername());
+                                System.out.println("Profile Photo: " + userProfile.getProfilePhoto());
+                                System.out.println("View Profile: " + userProfile.getViewProfile());
+                                System.out.println("Follow: " + userProfile.getFollow());
+                                System.out.println();
+                            });
+                            tableView.getItems().addAll(userProfiles);
+                            VBox vBox = new VBox(tableView);
+                            home_pane.getChildren().addAll(vBox);
                         }
                     });
 
@@ -342,8 +401,8 @@ public class login extends Application {
                     next_post_btn.setLayoutX(1210);
                     next_post_btn.setLayoutY(680);
 
-                    post_pane.getChildren().addAll(post1,post2,post3,post4,post5,post6,exit_btn,next_post_btn);
-                    home_pane.getChildren().addAll(details,insta,explore,imageView_instag_logo,user_name,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,collection,post,notification_btn,settings_btn,profile_btn,post_pane);
+                    post_pane.getChildren().addAll(post1,post2,post3,post4,post5,post6,exit_btn,next_post_btn,explore);
+                    home_pane.getChildren().addAll(details,insta,imageView_instag_logo,user_name,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,collection,post,notification_btn,settings_btn,profile_btn,post_pane);
                     primaryStage.setScene(home_scene);
                 }
                 else if(res.equals("false"))
