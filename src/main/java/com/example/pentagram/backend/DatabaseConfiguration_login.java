@@ -57,6 +57,47 @@ public class DatabaseConfiguration_login {
         return false;
     }
 
+    public static String user_pic(String username)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pentagram", "root", "Shamu@123");
+            preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username=?");
+            preparedStatement.setString(1, username);
+            resultset = preparedStatement.executeQuery();
+            if (!resultset.isBeforeFirst()) {
+                return "false";
+            }
+            while (resultset.next())
+            {
+                return resultset.getString("image_url");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources in reverse order of their creation
+            try {
+                if (resultset != null) {
+                    resultset.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "false";
+    }
+
     public static boolean Signup_backend(String mailid_str, String fullname_str, String signup_username_str, String signup_password_str, LocalDate dob, String bio_str, String insta_dp_str,String scl_name_str,String nickname_str)
     {
         Connection connection = null;

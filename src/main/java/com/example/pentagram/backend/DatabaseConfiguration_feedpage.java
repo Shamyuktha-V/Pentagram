@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DatabaseConfiguration_feedpage {
 
-   public static List<UserProfile> fetchUserDataFromDatabase() {
+   public static List<UserProfile> fetchUserDataFromDatabase(String username_check) {
         List<UserProfile> userProfiles = new ArrayList<>();
 
         Connection connection = null;
@@ -24,14 +24,14 @@ public class DatabaseConfiguration_feedpage {
             while (resultset.next()) {
                 String username = resultset.getString("username");
                 String image_url_replace = resultset.getString("image_url");
-               // String imageUrl = "file:///" + image_url_replace.replace("\\", "/");
-                /*Image profilePhoto = new Image(imageUrl);
-                ImageView profilePhoto_imageview = new ImageView(profilePhoto);*/
                 Button viewProfile = new Button("View Profile");
                 Button follow = new Button("Follow");
+                if(!username_check.equals(username))
+                {
+                    UserProfile userProfile = new UserProfile(image_url_replace, username, viewProfile, follow);
+                    userProfiles.add(userProfile);
+                }
 
-                UserProfile userProfile = new UserProfile(image_url_replace, username, viewProfile, follow);
-                userProfiles.add(userProfile);
             }
             return userProfiles;
         } catch (SQLException e) {

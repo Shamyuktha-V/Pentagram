@@ -2,28 +2,33 @@ package com.example.pentagram.frontend;
 import com.example.pentagram.backend.*;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.layout.VBox;
-
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.ButtonType;
+
+
 import javafx.util.Callback;
 
 import javafx.scene.control.Alert.AlertType;
@@ -144,9 +149,6 @@ public class login extends Application {
                     details.setX(0);
                     details.setY(0);
 
-
-
-
                     Image instag_logo = new Image("D:/Studies/sem5/java/pentagram/pics/insta_logo.PNG");
                     Image home = new Image("D:/Studies/sem5/java/pentagram/pics/home.PNG");
                     Image like = new Image("D:/Studies/sem5/java/pentagram/pics/like.JPG");
@@ -157,9 +159,19 @@ public class login extends Application {
                     Image saved = new Image("D:/Studies/sem5/java/pentagram/pics/saved.PNG");
                     Image notification = new Image("D:/Studies/sem5/java/pentagram/pics/notification.PNG");
                     Image profile = new Image("D:/Studies/sem5/java/pentagram/pics/profile.PNG");
-                    Image back_image = new Image("D:/Studies/sem5/java/pentagram/pics/back.PNG");
-                    Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.png");
 
+
+
+                    String user_dp = DatabaseConfiguration_login.user_pic(username_str);
+                    Image user_dp_image = new Image(user_dp);
+                    ImageView imageView_user_dp = new ImageView();
+                    imageView_user_dp.setImage(user_dp_image);
+                    Circle clip = new Circle(95, 95, 95);
+                    imageView_user_dp.setClip(clip);
+                    imageView_user_dp.setFitWidth(190);
+                    imageView_user_dp.setFitHeight(190);
+                    imageView_user_dp.setLayoutX(60);
+                    imageView_user_dp.setLayoutY(80);
 
                     ImageView imageView_instag_logo = new ImageView(instag_logo);
                     ImageView imageView_home = new ImageView(home);
@@ -171,8 +183,7 @@ public class login extends Application {
                     ImageView imageView_saved = new ImageView(saved);
                     ImageView imageView_notification = new ImageView(notification);
                     ImageView imageView_profile = new ImageView(profile);
-                    ImageView imageView_back = new ImageView(back_image);
-                    ImageView imageView_next = new ImageView(next_image);
+
 
 
                     int desiredWidth=40;
@@ -201,10 +212,7 @@ public class login extends Application {
                     imageView_profile.setFitHeight(desiredHeight);
                     imageView_add_post.setFitWidth(desiredWidth);
                     imageView_add_post.setFitHeight(desiredHeight);
-                    imageView_next.setFitWidth(50);
-                    imageView_next.setFitHeight(50);
-                    imageView_back.setFitWidth(50);
-                    imageView_back.setFitHeight(50);
+
 
 
                     imageView_instag_logo.setLayoutX(30);
@@ -251,14 +259,18 @@ public class login extends Application {
 
                     explore.setOnAction(new EventHandler<ActionEvent>() {
                         public void handle(ActionEvent Event) {
-                           TableView<com.example.pentagram.backend.UserProfile> tableView = new TableView<>();
-                            tableView.setStyle("-fx-font-family: Arial; -fx-font-size: 16px;");
+                            TableView<com.example.pentagram.backend.UserProfile> tableView = new TableView<>();
+                            tableView.setStyle("-fx-table-cell-border-color: transparent; -fx-table-cell-border-width: 0;");
                             tableView.setStyle("-fx-alignment: center;");
+// Hide column headings
+                            tableView.setStyle("-fx-table-header-background: transparent;");
+// Change font and font size
+                            tableView.setStyle("-fx-font-family: Arial; -fx-font-size: 16px;");
 
-                            TableColumn<com.example.pentagram.backend.UserProfile, Image> profilePhotoColumn = new TableColumn<>("Profile photo");
+                            TableColumn<com.example.pentagram.backend.UserProfile, Image> profilePhotoColumn = new TableColumn<>("");
                             profilePhotoColumn.setCellValueFactory(param -> {
                                 // Here, we return the Image object from the local file path
-                                Image profileImage = new Image("file:" + param.getValue().getProfilePhoto());
+                                Image profileImage = new Image(param.getValue().getProfilePhoto());
                                 return new SimpleObjectProperty<>(profileImage);
                             });
 
@@ -276,30 +288,101 @@ public class login extends Application {
                                             imageView.setFitWidth(50);
                                             imageView.setFitHeight(50);
                                             setGraphic(imageView);
+                                            setAlignment(Pos.CENTER); // Center-align the content
                                         }
                                     }
                                 };
                             });
 
-                            TableColumn<com.example.pentagram.backend.UserProfile, String> usernameColumn = new TableColumn<>("Username");
+                            TableColumn<com.example.pentagram.backend.UserProfile, String> usernameColumn = new TableColumn<>("");
                             usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
-                            TableColumn<com.example.pentagram.backend.UserProfile, Button> viewProfileColumn = new TableColumn<>("View Profile");
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> viewProfileColumn = new TableColumn<>("");
                             viewProfileColumn.setCellValueFactory(new PropertyValueFactory<>("viewProfile"));
 
-                            TableColumn<com.example.pentagram.backend.UserProfile, Button> followColumn = new TableColumn<>("Follow");
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> followColumn = new TableColumn<>("");
                             followColumn.setCellValueFactory(new PropertyValueFactory<>("follow"));
 
-                            tableView.getColumns().addAll(profilePhotoColumn,usernameColumn, viewProfileColumn, followColumn);
-                            tableView.setStyle("-fx-control-inner-background: #76D7C4; -fx-background-color: #76D7C4;");
-                            List<UserProfile> userProfiles = DatabaseConfiguration_feedpage.fetchUserDataFromDatabase();
+                            usernameColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, String>() {
+                                    private final Text text = new Text();
+
+                                    {
+                                        // Set text styles
+                                        text.setStyle("-fx-fill: #A93226; -fx-font-family: 'Helvetica';");
+                                    }
+
+                                    @Override
+                                    protected void updateItem(String item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            text.setText(item);
+                                            setGraphic(text);
+                                            setAlignment(Pos.CENTER); // Center-align the text
+                                        }
+                                    }
+                                };
+                            });
+
+                            // Style the buttons
+                            viewProfileColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, Button>() {
+                                    private final Button button = new Button("View profile");
+
+                                    @Override
+                                    protected void updateItem(Button item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            button.setMinWidth(50); // Set a minimum width for the button
+                                            button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;");
+                                            setGraphic(button);
+                                            setAlignment(Pos.CENTER); // Center-align the button
+                                            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;")); // Hover effect
+                                            button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;")); // Remove hover effect
+                                        }
+                                    }
+                                };
+                            });
+
+                            followColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, Button>() {
+                                    private final Button button = new Button("Follow");
+
+                                    @Override
+                                    protected void updateItem(Button item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            button.setMinWidth(50); // Set a minimum width for the button
+                                            button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;");
+                                            setGraphic(button);
+                                            setAlignment(Pos.CENTER); // Center-align the button
+                                            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;")); // Hover effect
+                                            button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;")); // Remove hover effect
+                                        }
+                                    }
+                                };
+                            });
+
+                            tableView.getColumns().addAll(profilePhotoColumn, usernameColumn, viewProfileColumn, followColumn);
+
+                            List<UserProfile> userProfiles = DatabaseConfiguration_feedpage.fetchUserDataFromDatabase(username_str);
                             tableView.getItems().addAll(userProfiles);
-                            tableView.setPrefWidth(1200); // Set the width to 600 pixels
-                            tableView.setPrefHeight(750); // Set the height to 400 pixels
-                            profilePhotoColumn.setPrefWidth(300); // Set the width for Profile Photo column to 100 pixels
-                            usernameColumn.setPrefWidth(300);     // Set the width for Username column to 150 pixels
-                            viewProfileColumn.setPrefWidth(300);   // Set the width for View Profile column to 200 pixels
-                            followColumn.setPrefWidth(300);        // Set the width for Follow column to 80 pixels
+
+// Set the preferred width and height for the TableView
+                            tableView.setPrefWidth(1200); // Set the width to 1200 pixels
+                            tableView.setPrefHeight(750); // Set the height to 750 pixels
+
+// Set the preferred width for columns
+                            profilePhotoColumn.setPrefWidth(300);
+                            usernameColumn.setPrefWidth(300);
+                            viewProfileColumn.setPrefWidth(300);
+                            followColumn.setPrefWidth(300);
 
                             VBox vBox = new VBox(tableView);
                             vBox.setLayoutY(25);
@@ -332,11 +415,152 @@ public class login extends Application {
                     profile_btn.setLayoutY(645);
                     profile_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
 
+                    profile_btn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            // Create a new pane with a white background
+                            Pane profilePane = new Pane();
+                            profilePane.setPrefSize(1800, 1400); // Set the width to 800 pixels and height to 600 pixels
+
+                            profilePane.setStyle("-fx-background-color: white;");
+
+
+
+                            // Add the circular user_dp image to the profilePane
+                            profilePane.getChildren().addAll(imageView_user_dp);
+
+                            // Set the user_dp's position within profilePane
+                            imageView_user_dp.setLayoutX(300);
+                            imageView_user_dp.setLayoutY(80);
+
+                            Text usernameText = new Text(username_str);
+                            usernameText.setFont(Font.font("Monotype Corsiva", 36));
+                            usernameText.setFill(Color.BLACK);
+                            usernameText.setLayoutX(650); // Adjust the X position as needed
+                            usernameText.setLayoutY(100); // Adjust the Y position as needed
+
+                            // Add the usernameText to profilePane
+                            profilePane.getChildren().addAll(usernameText);
+
+                            Button followButton = new Button("Follow");
+                            followButton.setMinWidth(80); // Set a minimum width for the button
+                            followButton.setPrefWidth(120); // Set the preferred width for the button
+                            followButton.setMinHeight(30); // Set a minimum height for the button
+                            followButton.setPrefHeight(40); // Set the preferred height for the button
+                            followButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 20px;");
+
+                            followButton.setOnMouseEntered(e -> {
+                                followButton.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white; -fx-font-size: 20px;"); // Maintain the font size
+                            });
+
+                            followButton.setOnMouseExited(e -> {
+                                followButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 20px;"); // Maintain the font size
+                            });
+// Adjust the button's layout as needed
+                            followButton.setLayoutX(770);
+                            followButton.setLayoutY(70);
+
+// Add the followButton to the profilePane
+                            // Create an HBox for labels "Posts," "Followers," and "Following"
+                            HBox labelsBox = new HBox(120); // Adjust spacing as needed
+                            labelsBox.setAlignment(Pos.CENTER);
+                            labelsBox.setLayoutX(650); // Adjust the X position as needed
+                            labelsBox.setLayoutY(200); // Adjust the Y position as needed
+
+                            Label postsLabel = new Label("Posts");
+                            postsLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
+                            postsLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+
+                            Label followersLabel = new Label("Followers");
+                            followersLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
+                            followersLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+
+                            Label followingLabel = new Label("Following");
+                            followingLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
+                            followingLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+
+                            labelsBox.getChildren().addAll(postsLabel, followersLabel, followingLabel);
+
+                            Button backButton = new Button("Back");
+                            backButton.setMinWidth(80); // Set a minimum width for the button
+                            backButton.setPrefWidth(120); // Set the preferred width for the button
+                            backButton.setMinHeight(30); // Set a minimum height for the button
+                            backButton.setPrefHeight(40); // Set the preferred height for the button
+                            backButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 20px;");
+
+                            backButton.setOnMouseEntered(e -> {
+                                backButton.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white; -fx-font-size: 20px;"); // Maintain the font size
+                            });
+
+                            backButton.setOnMouseExited(e -> {
+                                backButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 20px;"); // Maintain the font size
+                            });
+
+                            backButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    home_pane.getChildren().remove(profilePane);
+                                }
+                            });
+
+                            backButton.setLayoutX(30);
+                            backButton.setLayoutY(700); // Adjust the Y position as needed
+
+                            profilePane.getChildren().addAll(followButton, labelsBox,backButton);
+
+
+                            // Add the new pane to home_pane
+                            home_pane.getChildren().addAll(profilePane);
+                        }
+                    });
+
+
 
                     Button post = new Button("New post");
                     post.setLayoutX(80);
                     post.setLayoutY(705);
                     post.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+                    post.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            // Create a custom dialog
+                            Dialog<ButtonType> dialog = new Dialog<>();
+                            dialog.setTitle("Add Post");
+                            dialog.setHeaderText("Choose a file from your local disk");
+
+                            // Create the Choose File button
+                            ButtonType chooseButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+                            dialog.getDialogPane().getButtonTypes().addAll(chooseButton, ButtonType.CANCEL);
+
+                            // Create a custom button control
+                            Button chooseFileButton = new Button("Choose file");
+                            chooseFileButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 16px;");
+                            chooseFileButton.setPrefWidth(20); // Set the preferred width for the button
+                            chooseFileButton.setPrefHeight(20);
+
+
+                            // Add the custom button control to the dialog content
+                            dialog.getDialogPane().setContent(chooseFileButton);
+
+                            // Handle button action
+                            chooseFileButton.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    FileChooser fileChooser = new FileChooser();
+                                    fileChooser.setTitle("Open Image File");
+                                    fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+                                    File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+                                    if (selectedFile != null) {
+                                        String post_pic =selectedFile.toURI().toString();
+                                    }
+                                }
+                            });
+
+                            Optional<ButtonType> result = dialog.showAndWait();
+                        }
+                    });
 
 
                     Rectangle post1 = new Rectangle();
@@ -382,8 +606,8 @@ public class login extends Application {
                     post6.setY(350);
 
 
-                    post_pane.getChildren().addAll(post1,post2,post3,post4,post5,post6,explore);
-                    home_pane.getChildren().addAll(details,insta,imageView_instag_logo,user_name,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,collection,post,notification_btn,settings_btn,profile_btn,post_pane);
+                    post_pane.getChildren().addAll(post1,post2,post3,post4,post5,post6,explore,profile_btn);
+                    home_pane.getChildren().addAll(details,insta,imageView_instag_logo,imageView_user_dp,user_name,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,collection,post,notification_btn,settings_btn,post_pane);
                     primaryStage.setScene(home_scene);
                 }
                 else if(res.equals("false"))
@@ -685,15 +909,16 @@ public class login extends Application {
                 primaryStage.setTitle("Sign up page");
                 Pane signup1_pane = new Pane();
 
-                Rectangle signup1_rect = new Rectangle();
-                signup1_rect.setX(105);
-                signup1_rect.setY(105);
-                signup1_rect.setWidth(400);
-                signup1_rect.setHeight(450);
-                signup1_rect.setArcWidth(20); // Set the width of the corner arc
-                signup1_rect.setArcHeight(20);
-                signup1_rect.setFill(input_backgroundPattern);
-                signup1_pane.getChildren().addAll(signup1_rect);
+
+                final Rectangle[] signup1_rect = {new Rectangle()};
+                signup1_rect[0].setX(105);
+                signup1_rect[0].setY(105);
+                signup1_rect[0].setWidth(400);
+                signup1_rect[0].setHeight(450);
+                signup1_rect[0].setArcWidth(20); // Set the width of the corner arc
+                signup1_rect[0].setArcHeight(20);
+                signup1_rect[0].setFill(input_backgroundPattern);
+                signup1_pane.getChildren().addAll(signup1_rect[0]);
 
 
                 Label signup1_label=new Label("Sign UP");
@@ -833,16 +1058,26 @@ public class login extends Application {
                         insta_dp.setLayoutY(320);
                         insta_dp.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
-                        TextField insta_dp_input=new TextField();
-                        insta_dp_input.setLayoutX(270);
-                        insta_dp_input.setLayoutY(320);
-                        insta_dp_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+                        final Button[] chooseImageButton = {new Button("Choose Image")};
 
-                        Line line10 = new Line();
-                        line10.setStartX(270);
-                        line10.setStartY(350);
-                        line10.setEndX(455);
-                        line10.setEndY(350);
+                        final String[] user_pic_url = new String[1];
+                        chooseImageButton[0].setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+                                FileChooser fileChooser = new FileChooser();
+                                fileChooser.setTitle("Open Image File");
+                                fileChooser.getExtensionFilters().add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+                                File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+                                if (selectedFile != null) {
+                                    user_pic_url[0] =selectedFile.toURI().toString();
+                                }
+                            }
+                        });
+                        chooseImageButton[0].setLayoutX(290);
+                        chooseImageButton[0].setLayoutY(320);
+                        chooseImageButton[0].setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+
 
                         Label school_name=new Label("Institution");
                         school_name.setLayoutX(160);
@@ -891,7 +1126,6 @@ public class login extends Application {
                                 String signup_username_str=signup_username_input.getText();
                                 String signup_password_str=signup_password_input.getText();
                                 String bio_str=bio_input.getText();
-                                String insta_dp_str=insta_dp_input.getText();
                                 String scl_name_str=scl_input.getText();
                                 String nickname_str=nick_name_input.getText();
                                 if(DatabaseConfiguration_login.check_user(signup_username_str))
@@ -904,7 +1138,7 @@ public class login extends Application {
                                 }
                                 else
                                 {
-                                    if(DatabaseConfiguration_login.Signup_backend(mailid_str,fullname_str,signup_username_str,signup_password_str,dob,bio_str,insta_dp_str,scl_name_str,nickname_str))
+                                    if(DatabaseConfiguration_login.Signup_backend(mailid_str,fullname_str,signup_username_str,signup_password_str,dob,bio_str, user_pic_url[0],scl_name_str,nickname_str))
                                     {
                                         Alert alert = new Alert(AlertType.INFORMATION);
                                         alert.setTitle("Information Dialog");
@@ -937,7 +1171,7 @@ public class login extends Application {
                         signup_btn.setLayoutY(500);
                         signup_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
-                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,line9,next2_btn,signup_btn,insta_dp_input,insta_dp,line10,school_name,scl_input,line11,nickname_label,line12,nick_name_input);
+                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,line9,next2_btn,signup_btn, chooseImageButton[0],insta_dp,school_name,scl_input,line11,nickname_label,line12,nick_name_input);
                         root.getChildren().add(signup2_pane);
 
                     }});
