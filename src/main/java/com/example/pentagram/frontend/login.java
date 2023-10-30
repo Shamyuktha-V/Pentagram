@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.control.ButtonType;
@@ -37,7 +38,7 @@ public class login extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Login Page");
-        Image login_backgroundImage = new Image("D:/Studies/sem5/java/pentagram/pics/login_final.JPG");
+        Image login_backgroundImage = new Image("D:/Studies/sem5/java/pentagram/pics/red_left.JPG");
         BackgroundImage login_background = new BackgroundImage(
                 login_backgroundImage,
                 BackgroundRepeat.NO_REPEAT,
@@ -53,7 +54,7 @@ public class login extends Application {
                 )
         );
 
-        Image input_backgroundImage = new Image("file:D:/Studies/sem5/java/pentagram/pics/login_rect.jpg");
+        Image input_backgroundImage = new Image("file:D:/Studies/sem5/java/pentagram/pics/red_abs.jpg");
         ImagePattern input_backgroundPattern = new ImagePattern(input_backgroundImage);
         Pane root = new Pane();
         root.setBackground(new Background(login_background));
@@ -63,7 +64,7 @@ public class login extends Application {
         Pane input_pane = new Pane();
 
         Rectangle input = new Rectangle();
-        input.setX(105);
+        input.setX(900);
         input.setY(105);
         input.setWidth(400);
         input.setHeight(450);
@@ -73,46 +74,57 @@ public class login extends Application {
         input_pane.getChildren().addAll(input);
 
         Label log_in=new Label("Login");
-        log_in.setLayoutX(270);
+        log_in.setLayoutX(1070);
         log_in.setLayoutY(120);
-        log_in.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:30");
+        log_in.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:30");
 
         Label username=new Label("Username or Email Address");
-        username.setLayoutX(180);
+        username.setLayoutX(1000);
         username.setLayoutY(170);
-        username.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:20");
+        username.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:20;-fx-font-family: 'Helvetica';");
 
         TextField username_input=new TextField();
-        username_input.setLayoutX(190);
+        username_input.setLayoutX(1010);
         username_input.setLayoutY(220);
-        username_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
+        username_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15 ;-fx-font-family: 'Helvetica';");
 
         Line line1 = new Line();
-        line1.setStartX(150);
+        line1.setStartX(1010);
         line1.setStartY(250);
-        line1.setEndX(450);
+        line1.setEndX(1200);
         line1.setEndY(250);
 
         Label password=new Label("Password");
-        password.setLayoutX(260);
+        password.setLayoutX(1050);
         password.setLayoutY(280);
-        password.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:20");
+        password.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:20 ");
 
         PasswordField password_input=new PasswordField();
-        password_input.setLayoutX(190);
+        password_input.setLayoutX(1010);
         password_input.setLayoutY(320);
         password_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
         Line line2 = new Line();
-        line2.setStartX(150);
+        line2.setStartX(1010);
         line2.setStartY(350);
-        line2.setEndX(450);
+        line2.setEndX(1200);
         line2.setEndY(350);
 
+        /*final Button login_btn = new Button("View profile");
+        login_btn.setMinWidth(50); // Set a minimum width for the button
+        login_btn.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;");
+        setGraphic(login_btn);
+        setAlignment(Pos.CENTER); // Center-align the button
+        login_btn.setOnMouseEntered(e -> login_btn.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;")); // Hover effect
+        login_btn.setOnMouseExited(e -> login_btn.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;")); // Remove hover eff
+*/
         Button login_btn = new Button("Log In");
-        login_btn.setLayoutX(265);
+        login_btn.setLayoutX(1060);
         login_btn.setLayoutY(400);
-        login_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+        login_btn.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white; -fx-font-size:20");
+        login_btn.setOnMouseEntered(e -> login_btn.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white;-fx-font-size: 20;")); // Hover effect
+        login_btn.setOnMouseExited(e -> login_btn.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white;-fx-font-size: 20;")); // Remove hover eff
+
         login_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 String username_str = username_input.getText();
@@ -302,7 +314,6 @@ public class login extends Application {
 
                             TableColumn<com.example.pentagram.backend.UserProfile, Button> followColumn = new TableColumn<>("");
                             followColumn.setCellValueFactory(new PropertyValueFactory<>("follow"));
-
                             usernameColumn.setCellFactory(column -> {
                                 return new TableCell<com.example.pentagram.backend.UserProfile, String>() {
                                     private final Text text = new Text();
@@ -351,6 +362,40 @@ public class login extends Application {
                             followColumn.setCellFactory(column -> {
                                 return new TableCell<com.example.pentagram.backend.UserProfile, Button>() {
                                     private final Button button = new Button("Follow");
+                                    {
+                                    button.setOnAction(event ->{
+                                        com.example.pentagram.backend.UserProfile userProfile = getTableView().getItems().get(getIndex());
+                                        // Implement your follow logic here based on userProfile
+                                        int userid1 = DatabaseConfiguration_feedpage.getuserID(username_str);
+                                        int userid2 = DatabaseConfiguration_feedpage.getuserID(userProfile.getUsername());
+                                        String type1 = DatabaseConfiguration_feedpage.check_connection(userid1, userid2);
+                                        String type2 = DatabaseConfiguration_feedpage.check_connection(userid2, userid1);
+                                        System.out.println("Follow button clicked for user: " + userProfile.getUsername());
+                                        if (type1.equals("new") && type2.equals("new")) {
+                                            if (DatabaseConfiguration_feedpage.connection_table(userid1, userid2, "following")) {
+                                                button.setText("Following");
+                                            } else {
+                                                Alert alert = new Alert(AlertType.ERROR);
+                                                alert.setTitle("Retry");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText("We are encountering issue in database,Please try again! in creation");
+                                                alert.showAndWait();
+                                            }
+
+                                        } else if (type1.equals("new") && type2.equals("following")) {
+                                            if (DatabaseConfiguration_feedpage.connection_update(userid1, userid2)) {
+                                                DatabaseConfiguration_feedpage.connection_table(userid1,userid2, "mutual");
+                                                button.setText("Following");
+                                            } else {
+                                                Alert alert = new Alert(AlertType.ERROR);
+                                                alert.setTitle("Retry");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText("We are encountering issue in database,Please try again! in updation");
+                                                alert.showAndWait();
+                                            }
+                                        }
+
+                                    });}
 
                                     @Override
                                     protected void updateItem(Button item, boolean empty) {
@@ -466,18 +511,28 @@ public class login extends Application {
                             labelsBox.setAlignment(Pos.CENTER);
                             labelsBox.setLayoutX(650); // Adjust the X position as needed
                             labelsBox.setLayoutY(200); // Adjust the Y position as needed
+                            int user_id = DatabaseConfiguration_feedpage.getuserID(username_str);
 
-                            Label postsLabel = new Label("Posts");
+                            int no_post = DatabaseConfiguration_feedpage.getnopost(user_id);
+                            String postsLabel_text = Integer.toString(no_post) + " Posts";
+                            Label postsLabel = new Label();
                             postsLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
                             postsLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+                            postsLabel.setText(postsLabel_text);
 
-                            Label followersLabel = new Label("Followers");
+                            int no_followers = DatabaseConfiguration_feedpage.getnofollowers(user_id);
+                            String followersLabel_text = Integer.toString(no_followers)+" Followers";
+                            Label followersLabel = new Label();
                             followersLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
                             followersLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+                            followersLabel.setText(followersLabel_text);
 
-                            Label followingLabel = new Label("Following");
+                            int no_following = DatabaseConfiguration_feedpage.getnofollowing(user_id);
+                            String followingLabel_text = Integer.toString(no_following)+" Following";
+                            Label followingLabel = new Label();
                             followingLabel.setFont(Font.font("Ariel", 24)); // Set the font size and style
                             followingLabel.setTextFill(Color.web("#C0392B")); // Set the text color
+                            followingLabel.setText(followingLabel_text);
 
                             labelsBox.getChildren().addAll(postsLabel, followersLabel, followingLabel);
 
@@ -508,7 +563,148 @@ public class login extends Application {
 
                             profilePane.getChildren().addAll(followButton, labelsBox,backButton);
 
+                            /*TableView<com.example.pentagram.backend.UserProfile> follower_table = new TableView<>();
+                            follower_table.setStyle("-fx-table-cell-border-color: transparent; -fx-table-cell-border-width: 0;");
+                            follower_table.setStyle("-fx-alignment: center;");
+// Hide column headings
+                            follower_table.setStyle("-fx-table-header-background: transparent;");
+// Change font and font size
+                            follower_table.setStyle("-fx-font-family: Arial; -fx-font-size: 16px;");*/
 
+                            // Define TableView, create a column, and set its properties
+                            TableView<com.example.pentagram.backend.UserProfile> followerTable = new TableView<>();
+                            followerTable.setStyle("-fx-control-inner-background: #A93226; -fx-background-color: #A93226;");
+                            followerTable.setStyle("-fx-table-cell-border-color: #A93226; -fx-table-cell-border-width: 0;");
+                            followerTable.setStyle("-fx-alignment: center;");
+                            followerTable.setStyle("-fx-table-header-background: #A93226;");
+                            followerTable.setStyle("-fx-font-family: Arial; -fx-font-size: 24px;");
+                            TableColumn<com.example.pentagram.backend.UserProfile, String> followerColumn = new TableColumn<>("Followers");
+                            followerColumn.setCellValueFactory(new PropertyValueFactory<>("property1")); // Replace with your actual data model properties
+                            followerTable.getColumns().add(followerColumn);
+
+                            followerTable.setLayoutX(220);
+                            followerTable.setLayoutY(300);
+                            followerTable.setPrefSize(250, 350);
+                            followerColumn.setPrefWidth(250);
+                            int userid = DatabaseConfiguration_feedpage.getuserID(username_str);
+
+                            TableView<com.example.pentagram.backend.UserProfile> followingTable = new TableView<>();
+                            followingTable.setStyle("-fx-control-inner-background: #A93226; -fx-background-color: #A93226;");
+                            followingTable.setStyle("-fx-table-cell-border-color: #A93226; -fx-table-cell-border-width: 0;");
+                            followingTable.setStyle("-fx-alignment: center;");
+                            followingTable.setStyle("-fx-table-header-background: #A93226;");
+                            followingTable.setStyle("-fx-font-family: Arial; -fx-font-size: 24px;");
+                            TableColumn<com.example.pentagram.backend.UserProfile, String> followingColumn = new TableColumn<>("Following");
+                            followingColumn.setCellValueFactory(new PropertyValueFactory<>("property1")); // Replace with your actual data model properties
+                            followingTable.getColumns().add(followingColumn);
+
+
+// Set layout and position for the followerTable
+                            followingTable.setLayoutX(580);
+                            followingTable.setLayoutY(300);
+                            followingTable.setPrefSize(250, 350);
+                            followingColumn.setPrefWidth(250);
+
+
+// Add the followerTable to profilePane
+                            //profilePane.getChildren().add(followerTable);
+
+
+
+                            TableView<com.example.pentagram.backend.UserProfile> postTable = new TableView<>();
+                            postTable.setStyle("-fx-table-cell-border-color: transparent; -fx-table-cell-border-width: 0;");
+                            postTable.setStyle("-fx-alignment: center;");
+// Hide column headings
+                            postTable.setStyle("-fx-table-header-background: transparent;");
+// Change font and font size
+                            postTable.setStyle("-fx-font-family: Arial; -fx-font-size: 16px;");
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, Image> postColumn = new TableColumn<>("post");
+                            postColumn.setCellValueFactory(param -> {
+                                // Here, we return the Image object from the local file path
+                                Image profileImage = new Image(param.getValue().getProfilePhoto());
+                                return new SimpleObjectProperty<>(profileImage);
+                            });
+
+                            postColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, Image>() {
+                                    private final ImageView imageView = new ImageView();
+
+                                    @Override
+                                    protected void updateItem(Image item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            imageView.setImage(item);
+                                            imageView.setFitWidth(50);
+                                            imageView.setFitHeight(50);
+                                            setGraphic(imageView);
+                                            setAlignment(Pos.CENTER); // Center-align the content
+                                        }
+                                    }
+                                };
+                            });
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> likeColumn = new TableColumn<>("like");
+                            likeColumn.setCellValueFactory(new PropertyValueFactory<>("like"));
+                            //In this code, we create a custom cell factory for the postColumn that returns a Button. This way, you can display the "View profile" button in each cell of the postTable. Make sure to adapt this code to your specific data model as needed.
+
+                            likeColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, Button>() {
+                                    private final Button button = new Button("like");
+
+                                    @Override
+                                    protected void updateItem(Button item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            button.setMinWidth(50); // Set a minimum width for the button
+                                            button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;");
+                                            setGraphic(button);
+                                            setAlignment(Pos.CENTER); // Center-align the button
+                                            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;")); // Hover effect
+                                            button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;")); // Remove hover effect
+                                        }
+                                    }
+                                };
+                            });
+
+                            TableColumn<com.example.pentagram.backend.UserProfile, Button> commentColumn = new TableColumn<>("Comments");
+                            likeColumn.setCellValueFactory(new PropertyValueFactory<>("comments"));
+                            //In this code, we create a custom cell factory for the postColumn that returns a Button. This way, you can display the "View profile" button in each cell of the postTable. Make sure to adapt this code to your specific data model as needed.
+
+                            likeColumn.setCellFactory(column -> {
+                                return new TableCell<com.example.pentagram.backend.UserProfile, Button>() {
+                                    private final Button button = new Button("comment");
+
+                                    @Override
+                                    protected void updateItem(Button item, boolean empty) {
+                                        super.updateItem(item, empty);
+                                        if (empty || item == null) {
+                                            setGraphic(null);
+                                        } else {
+                                            button.setMinWidth(50); // Set a minimum width for the button
+                                            button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;");
+                                            setGraphic(button);
+                                            setAlignment(Pos.CENTER); // Center-align the button
+                                            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #FF6347; -fx-text-fill: white;")); // Hover effect
+                                            button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white;")); // Remove hover effect
+                                        }
+                                    }
+                                };
+                            });
+                            postTable.setLayoutX(900);
+                            postTable.setLayoutY(300);
+                            postTable.setPrefSize(600, 600);
+                            postColumn.setPrefWidth(250);
+                            likeColumn.setPrefWidth(150);
+                            commentColumn.setPrefWidth(250);
+
+
+                            postTable.getColumns().addAll(postColumn, likeColumn,commentColumn);
+                            profilePane.getChildren().addAll(followerTable,followingTable,postTable);
                             // Add the new pane to home_pane
                             home_pane.getChildren().addAll(profilePane);
                         }
@@ -524,26 +720,44 @@ public class login extends Application {
                     post.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
-                            // Create a custom dialog
+// Create a custom dialog
                             Dialog<ButtonType> dialog = new Dialog<>();
                             dialog.setTitle("Add Post");
                             dialog.setHeaderText("Choose a file from your local disk");
 
-                            // Create the Choose File button
+// Create the Choose File button
                             ButtonType chooseButton = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
                             dialog.getDialogPane().getButtonTypes().addAll(chooseButton, ButtonType.CANCEL);
 
-                            // Create a custom button control
-                            Button chooseFileButton = new Button("Choose file");
+                            Button chooseFileButton = new Button("Choose");
                             chooseFileButton.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 16px;");
-                            chooseFileButton.setPrefWidth(20); // Set the preferred width for the button
-                            chooseFileButton.setPrefHeight(20);
+                            chooseFileButton.setPrefWidth(100); // Set the preferred width for the button
+                            chooseFileButton.setPrefHeight(10);
+
+// Create a GridPane for dialog content
+                            GridPane grid = new GridPane();
+                            grid.setHgap(10);
+                            grid.setVgap(10);
+
+// Create a label and a text field for caption
+                            Label captionLabel = new Label("Caption:");
+                            TextField captionInput = new TextField();
+
+// Set the style for the label and text field
+                            captionLabel.setStyle("-fx-background-color: #CB4335; -fx-text-fill: white; -fx-font-size: 16px;");
+                            captionInput.setStyle("-fx-background-color: white; -fx-text-fill: #CB4335; -fx-font-size: 16px;");
+
+// Add label and text field to the grid
+                            grid.add(captionLabel, 1, 1);
+                            grid.add(captionInput, 2, 1);
+                            grid.add(chooseFileButton, 1,2);
+// Set the grid as the content of the dialog
+                            dialog.getDialogPane().setContent(grid);
+
+// Handle the OK button action
 
 
-                            // Add the custom button control to the dialog content
-                            dialog.getDialogPane().setContent(chooseFileButton);
-
-                            // Handle button action
+                            final String[] post_pic = new String[1];
                             chooseFileButton.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
@@ -553,10 +767,34 @@ public class login extends Application {
                                     File selectedFile = fileChooser.showOpenDialog(new Stage());
 
                                     if (selectedFile != null) {
-                                        String post_pic =selectedFile.toURI().toString();
+                                        post_pic[0] = selectedFile.toURI().toString();
                                     }
                                 }
                             });
+                            // Handle button action
+                            dialog.setResultConverter(dialogButton -> {
+                                if (dialogButton == chooseButton) {
+                                    int user_id = DatabaseConfiguration_feedpage.getuserID(username_str);
+                                    if(DatabaseConfiguration_feedpage.add_post(post_pic[0],0,user_id,captionInput.getText()))
+                                    {
+                                        Alert alert = new Alert(AlertType.INFORMATION);
+                                        alert.setTitle("Information Dialog");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Post added successful!");
+                                        alert.showAndWait();
+                                    }
+                                    else
+                                    {
+                                        Alert alert = new Alert(AlertType.ERROR);
+                                        alert.setTitle("Retry");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("We are encountering issue in database,Please try again!");
+                                        alert.showAndWait();
+                                    }
+                                }
+                                return null;
+                            });
+
 
                             Optional<ButtonType> result = dialog.showAndWait();
                         }
@@ -622,16 +860,16 @@ public class login extends Application {
             }
         });
         Button forgot_btn = new Button("Forgot password?");
-        forgot_btn.setLayoutX(235);
+        forgot_btn.setLayoutX(1020);
         forgot_btn.setLayoutY(460);
-        forgot_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:15");
+        forgot_btn.setStyle("-fx-text-fill:#8B0000; -fx-font-size:15");
         forgot_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 primaryStage.setTitle("Forgot password page");
                 Pane forgot_pane = new Pane();
 
                 Rectangle password_change = new Rectangle();
-                password_change.setX(105);
+                password_change.setX(900);
                 password_change.setY(105);
                 password_change.setWidth(400);
                 password_change.setHeight(450);
@@ -642,68 +880,52 @@ public class login extends Application {
 
 
                 Label forgot_password=new Label("Forgot Password");
-                forgot_password.setLayoutX(215);
-                forgot_password.setLayoutY(120);
-                forgot_password.setStyle("-fx-text-fill:#2C165C; -fx-font-size:25");
+                forgot_password.setLayoutX(1030);
+                forgot_password.setLayoutY(140);
+                forgot_password.setStyle("-fx-text-fill:#8B0000; -fx-font-size:25");
 
                 Label user_forget=new Label("Username");
-                user_forget.setLayoutX(160);
-                user_forget.setLayoutY(180);
-                user_forget.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                user_forget.setLayoutX(970);
+                user_forget.setLayoutY(200);
+                user_forget.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField user_forget_input=new TextField();
-                user_forget_input.setLayoutX(270);
-                user_forget_input.setLayoutY(180);
+                user_forget_input.setLayoutX(1070);
+                user_forget_input.setLayoutY(200);
                 user_forget_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
 
-                Line line3 = new Line();
-                line3.setStartX(270);
-                line3.setStartY(211);
-                line3.setEndX(455);
-                line3.setEndY(211);
 
                 Label school=new Label("Institution");
-                school.setLayoutX(160);
-                school.setLayoutY(250);
-                school.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                school.setLayoutX(970);
+                school.setLayoutY(270);
+                school.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField school_input=new TextField();
-                school_input.setLayoutX(270);
-                school_input.setLayoutY(250);
+                school_input.setLayoutX(1070);
+                school_input.setLayoutY(270);
                 school_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
 
-                Line line13 = new Line();
-                line13.setStartX(270);
-                line13.setStartY(280);
-                line13.setEndX(455);
-                line13.setEndY(280);
 
 
                 Label nick_name=new Label("Nickname");
-                nick_name.setLayoutX(160);
-                nick_name.setLayoutY(320);
-                nick_name.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                nick_name.setLayoutX(970);
+                nick_name.setLayoutY(340);
+                nick_name.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField nickname_input=new TextField();
-                nickname_input.setLayoutX(270);
+                nickname_input.setLayoutX(1070);
                 nickname_input.setLayoutY(320);
                 nickname_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
-                Line line4 = new Line();
-                line4.setStartX(270);
-                line4.setStartY(350);
-                line4.setEndX(455);
-                line4.setEndY(350);
-
                 Button change_password = new Button("Submit");
-                change_password.setLayoutX(265);
+                change_password.setLayoutX(1070);
                 change_password.setLayoutY(400);
-                change_password.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                change_password.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 Button back_forgot = new Button("Back");
-                back_forgot.setLayoutX(265);
+                back_forgot.setLayoutX(1085);
                 back_forgot.setLayoutY(460);
-                back_forgot.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                back_forgot.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 back_forgot.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -896,14 +1118,14 @@ public class login extends Application {
                     }
                 });
 
-                forgot_pane.getChildren().addAll(forgot_password,school_input,school,nickname_input,nick_name,change_password,line3,line4,back_forgot,user_forget_input,user_forget,line13);
+                forgot_pane.getChildren().addAll(forgot_password,school_input,school,nickname_input,nick_name,change_password,back_forgot,user_forget_input,user_forget);
                 root.getChildren().add(forgot_pane);
             }
         });
         Button signup_btn = new Button("Doesn't have an account? Create account");
-        signup_btn.setLayoutX(160);
+        signup_btn.setLayoutX(950);
         signup_btn.setLayoutY(500);
-        signup_btn.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:15");
+        signup_btn.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:15");
         signup_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 primaryStage.setTitle("Sign up page");
@@ -911,7 +1133,7 @@ public class login extends Application {
 
 
                 final Rectangle[] signup1_rect = {new Rectangle()};
-                signup1_rect[0].setX(105);
+                signup1_rect[0].setX(900);
                 signup1_rect[0].setY(105);
                 signup1_rect[0].setWidth(400);
                 signup1_rect[0].setHeight(450);
@@ -921,86 +1143,60 @@ public class login extends Application {
                 signup1_pane.getChildren().addAll(signup1_rect[0]);
 
 
-                Label signup1_label=new Label("Sign UP");
-                signup1_label.setLayoutX(255);
+                Label signup1_label=new Label("SignUp");
+                signup1_label.setLayoutX(1060);
                 signup1_label.setLayoutY(120);
-                signup1_label.setStyle("-fx-text-fill:#2C165C; -fx-font-size:25");
+                signup1_label.setStyle("-fx-text-fill:#8B0000; -fx-font-size:25");
 
                 Label mailid=new Label("Mail id");
-                mailid.setLayoutX(160);
+                mailid.setLayoutX(970);
                 mailid.setLayoutY(180);
-                mailid.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                mailid.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField mailid_input=new TextField();
-                mailid_input.setLayoutX(270);
+                mailid_input.setLayoutX(1060);
                 mailid_input.setLayoutY(180);
                 mailid_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
 
-
-                Line line5 = new Line();
-                line5.setStartX(270);
-                line5.setStartY(210);
-                line5.setEndX(455);
-                line5.setEndY(210);
-
                 Label full_name=new Label("Full name");
-                full_name.setLayoutX(160);
+                full_name.setLayoutX(970);
                 full_name.setLayoutY(250);
-                full_name.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                full_name.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField fullname_input=new TextField();
-                fullname_input.setLayoutX(270);
+                fullname_input.setLayoutX(1060);
                 fullname_input.setLayoutY(250);
                 fullname_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
 
-
-                Line line6 = new Line();
-                line6.setStartX(270);
-                line6.setStartY(280);
-                line6.setEndX(455);
-                line6.setEndY(280);
-
                 Label signup_username=new Label("Username");
-                signup_username.setLayoutX(160);
+                signup_username.setLayoutX(970);
                 signup_username.setLayoutY(320);
-                signup_username.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:20");
+                signup_username.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:20");
 
                 TextField signup_username_input=new TextField();
-                signup_username_input.setLayoutX(270);
+                signup_username_input.setLayoutX(1060);
                 signup_username_input.setLayoutY(320);
                 signup_username_input.setStyle("-fx-background-color:#E6E6FA;-fx-text-fill:#2C165C; -fx-font-size:15");
 
 
 
-                Line line7 = new Line();
-                line7.setStartX(270);
-                line7.setStartY(350);
-                line7.setEndX(455);
-                line7.setEndY(350);
-
                 Label signup_password=new Label("Password");
-                signup_password.setLayoutX(160);
+                signup_password.setLayoutX(970);
                 signup_password.setLayoutY(390);
-                signup_password.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:20");
+                signup_password.setStyle(" -fx-text-fill:#8B0000; -fx-font-size:20");
 
                 PasswordField signup_password_input=new PasswordField();
-                signup_password_input.setLayoutX(270);
+                signup_password_input.setLayoutX(1060);
                 signup_password_input.setLayoutY(390);
                 signup_password_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
 
-                Line line8 = new Line();
-                line8.setStartX(270);
-                line8.setStartY(420);
-                line8.setEndX(455);
-                line8.setEndY(420);
-
                 Button next1_btn = new Button("Next");
-                next1_btn.setLayoutX(375);
+                next1_btn.setLayoutX(1200);
                 next1_btn.setLayoutY(460);
-                next1_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                next1_btn.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
                 next1_btn.setOnAction(new EventHandler<ActionEvent>() {
 
                     public void handle(ActionEvent event) {
@@ -1009,7 +1205,7 @@ public class login extends Application {
                         Pane signup2_pane = new Pane();
 
                         Rectangle signup2_rect = new Rectangle();
-                        signup2_rect.setX(105);
+                        signup2_rect.setX(900);
                         signup2_rect.setY(105);
                         signup2_rect.setWidth(400);
                         signup2_rect.setHeight(450);
@@ -1020,43 +1216,38 @@ public class login extends Application {
 
 
                         Label signup2_label=new Label("Sign UP");
-                        signup2_label.setLayoutX(255);
+                        signup2_label.setLayoutX(1080);
                         signup2_label.setLayoutY(120);
-                        signup2_label.setStyle("-fx-text-fill:#2C165C; -fx-font-size:25");
+                        signup2_label.setStyle("-fx-text-fill:#8B0000; -fx-font-size:25");
 
                         Label date=new Label("DOB");
-                        date.setLayoutX(160);
+                        date.setLayoutX(970);
                         date.setLayoutY(180);
-                        date.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        date.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         DatePicker datePicker = new DatePicker();
 
                         VBox vbox = new VBox(datePicker);
-                        vbox.setLayoutX(270);
+                        vbox.setLayoutX(1080);
                         vbox.setLayoutY(180);
 
 
                         Label bio=new Label("Bio");
-                        bio.setLayoutX(160);
+                        bio.setLayoutX(970);
                         bio.setLayoutY(250);
-                        bio.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        bio.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         TextField bio_input=new TextField();
-                        bio_input.setLayoutX(270);
+                        bio_input.setLayoutX(1080);
                         bio_input.setLayoutY(250);
                         bio_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
 
-                        Line line9 = new Line();
-                        line9.setStartX(270);
-                        line9.setStartY(280);
-                        line9.setEndX(455);
-                        line9.setEndY(280);
 
                         Label insta_dp=new Label("Image path");
-                        insta_dp.setLayoutX(160);
+                        insta_dp.setLayoutX(970);
                         insta_dp.setLayoutY(320);
-                        insta_dp.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        insta_dp.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         final Button[] chooseImageButton = {new Button("Choose Image")};
 
@@ -1074,47 +1265,38 @@ public class login extends Application {
                                 }
                             }
                         });
-                        chooseImageButton[0].setLayoutX(290);
+                        chooseImageButton[0].setLayoutX(1080);
                         chooseImageButton[0].setLayoutY(320);
-                        chooseImageButton[0].setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
+                        chooseImageButton[0].setStyle("-fx-background-color:#8B0000; -fx-text-fill:white; -fx-font-size:15");
 
 
                         Label school_name=new Label("Institution");
-                        school_name.setLayoutX(160);
-                        school_name.setLayoutY(380);
-                        school_name.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        school_name.setLayoutX(970);
+                        school_name.setLayoutY(370);
+                        school_name.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         TextField scl_input=new TextField();
-                        scl_input.setLayoutX(270);
-                        scl_input.setLayoutY(380);
+                        scl_input.setLayoutX(1070);
+                        scl_input.setLayoutY(370);
                         scl_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
-                        Line line11 = new Line();
-                        line11.setStartX(270);
-                        line11.setStartY(410);
-                        line11.setEndX(455);
-                        line11.setEndY(410);
 
                         Label nickname_label=new Label("Nickname");
-                        nickname_label.setLayoutX(160);
-                        nickname_label.setLayoutY(440);
-                        nickname_label.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        nickname_label.setLayoutX(970);
+                        nickname_label.setLayoutY(420);
+                        nickname_label.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         TextField nick_name_input=new TextField();
-                        nick_name_input.setLayoutX(270);
-                        nick_name_input.setLayoutY(440);
+                        nick_name_input.setLayoutX(1070);
+                        nick_name_input.setLayoutY(420);
                         nick_name_input.setStyle("-fx-background-color:#E6E6FA; -fx-text-fill:#2C165C; -fx-font-size:15");
 
-                        Line line12 = new Line();
-                        line12.setStartX(270);
-                        line12.setStartY(471);
-                        line12.setEndX(455);
-                        line12.setEndY(471);
+
 
                         Button next2_btn = new Button("Sign Up");
-                        next2_btn.setLayoutX(370);
-                        next2_btn.setLayoutY(500);
-                        next2_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                        next2_btn.setLayoutX(1170);
+                        next2_btn.setLayoutY(470);
+                        next2_btn.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                         next2_btn.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
@@ -1171,14 +1353,14 @@ public class login extends Application {
                         signup_btn.setLayoutY(500);
                         signup_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
 
-                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,line9,next2_btn,signup_btn, chooseImageButton[0],insta_dp,school_name,scl_input,line11,nickname_label,line12,nick_name_input);
+                        signup2_pane.getChildren().addAll(signup2_label,date,vbox,bio,bio_input,next2_btn,signup_btn, chooseImageButton[0],insta_dp,school_name,scl_input,nickname_label,nick_name_input);
                         root.getChildren().add(signup2_pane);
 
                     }});
                 Button back_home = new Button("Back");
-                back_home.setLayoutX(175);
+                back_home.setLayoutX(950);
                 back_home.setLayoutY(460);
-                back_home.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
+                back_home.setStyle("-fx-text-fill:#8B0000; -fx-font-size:20");
 
                 back_home.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -1194,7 +1376,7 @@ public class login extends Application {
                     }
                 });
 
-                signup1_pane.getChildren().addAll(signup1_label,mailid,mailid_input,line5,full_name,fullname_input,line6,signup_username,signup_username_input,line7,signup_password,signup_password_input,line8,next1_btn,back_home);
+                signup1_pane.getChildren().addAll(signup1_label,mailid,mailid_input,full_name,fullname_input,signup_username,signup_username_input,signup_password,signup_password_input,next1_btn,back_home);
                 root.getChildren().add(signup1_pane);
             }
         });
