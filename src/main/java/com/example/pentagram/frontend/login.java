@@ -1,4 +1,4 @@
-package com.example.pentagram;
+package com.example.pentagram.frontend;
 import com.example.pentagram.backend.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -26,8 +26,6 @@ import java.time.LocalDate;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class login extends Application {
     @Override
@@ -111,200 +109,252 @@ public class login extends Application {
         login_btn.setStyle("-fx-text-fill:#2C165C; -fx-font-size:20");
         login_btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                primaryStage.setTitle("Home page");
-                Pane home_pane = new Pane();
-                home_pane.setStyle("-fx-background-color: #E5E4E2;");
-                Scene home_scene = new Scene(home_pane,1300,750);
+                String username_str = username_input.getText();
+                String password_str = password_input.getText();
+                String res= DatabaseConfiguration_login.check_login(username_str,password_str);
+                if(res.equals("user"))
+                {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Username is incorrect");
+                    alert.showAndWait();
+                    username_input.clear();
+                    password_input.clear();
+                }
+                else if(res.equals("true"))
+                {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully logged in");
+                    alert.showAndWait();
+                    primaryStage.setTitle("Home page");
+                    Pane home_pane = new Pane();
+                    home_pane.setStyle("-fx-background-color: #E5E4E2;");
+                    Scene home_scene = new Scene(home_pane,1300,750);
 
-                Rectangle details = new Rectangle();
-                details.setWidth(300);
-                details.setHeight(750);
-                details.setFill(Color.WHITE);
-                details.setX(0);
-                details.setY(0);
+                    Pane insta_option = new Pane();
+                    Pane post_pane = new Pane();
 
-
-                Image instag_logo = new Image("D:/Studies/sem5/java/pentagram/pics/insta_logo.PNG");
-                Image home = new Image("D:/Studies/sem5/java/pentagram/pics/home.PNG");
-                Image like = new Image("D:/Studies/sem5/java/pentagram/pics/like.JPG");
-                Image add_post = new Image("D:/Studies/sem5/java/pentagram/pics/add_post.PNG");
-                Image comment = new Image("D:/Studies/sem5/java/pentagram/pics/comment.PNG");
-                Image search = new Image("D:/Studies/sem5/java/pentagram/pics/search.PNG");
-                Image settings = new Image("D:/Studies/sem5/java/pentagram/pics/settings.PNG");
-                Image saved = new Image("D:/Studies/sem5/java/pentagram/pics/saved.PNG");
-                Image notification = new Image("D:/Studies/sem5/java/pentagram/pics/notification.PNG");
-                Image profile = new Image("D:/Studies/sem5/java/pentagram/pics/profile.PNG");
-                Image back_image = new Image("D:/Studies/sem5/java/pentagram/pics/back.PNG");
-                Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.PNG");
-
-
-                ImageView imageView_instag_logo = new ImageView(instag_logo);
-                ImageView imageView_home = new ImageView(home);
-                ImageView imageView_like = new ImageView(like);
-                ImageView imageView_add_post = new ImageView(add_post);
-                ImageView imageView_comment = new ImageView(comment);
-                ImageView imageView_search = new ImageView(search);
-                ImageView imageView_settings = new ImageView(settings);
-                ImageView imageView_saved = new ImageView(saved);
-                ImageView imageView_notification = new ImageView(notification);
-                ImageView imageView_profile = new ImageView(profile);
-                ImageView imageView_back = new ImageView(back_image);
-                ImageView imageView_next = new ImageView(next_image);
-
-
-                int desiredWidth=40;
-                int desiredHeight=40;
-
-
-                imageView_instag_logo.setFitWidth(desiredWidth);
-                imageView_instag_logo.setFitHeight(desiredHeight);
-                imageView_home.setFitWidth(desiredWidth);
-                imageView_home.setFitHeight(desiredHeight);
-                imageView_like.setFitWidth(desiredWidth);
-                imageView_like.setFitHeight(desiredHeight);
-                imageView_add_post.setFitWidth(desiredWidth);
-                imageView_add_post.setFitHeight(desiredHeight);
-                imageView_comment.setFitWidth(desiredWidth);
-                imageView_comment.setFitHeight(desiredHeight);
-                imageView_search.setFitWidth(desiredWidth);
-                imageView_search.setFitHeight(desiredHeight);
-                imageView_settings.setFitWidth(desiredWidth);
-                imageView_settings.setFitHeight(desiredHeight);
-                imageView_saved.setFitWidth(desiredWidth);
-                imageView_saved.setFitHeight(desiredHeight);
-                imageView_notification.setFitWidth(desiredWidth);
-                imageView_notification.setFitHeight(desiredHeight);
-                imageView_profile.setFitWidth(desiredWidth);
-                imageView_profile.setFitHeight(desiredHeight);
-                imageView_add_post.setFitWidth(desiredWidth);
-                imageView_add_post.setFitHeight(desiredHeight);
-                imageView_next.setFitWidth(50);
-                imageView_next.setFitHeight(50);
-                imageView_back.setFitWidth(50);
-                imageView_back.setFitHeight(50);
-
-
-                imageView_instag_logo.setLayoutX(30);
-                imageView_instag_logo.setLayoutY(30);
-                imageView_home.setLayoutX(40);
-                imageView_home.setLayoutY(340);
-                imageView_search.setLayoutX(40);
-                imageView_search.setLayoutY(400);
-                imageView_saved.setLayoutX(40);
-                imageView_saved.setLayoutY(460);
-                imageView_notification.setLayoutX(40);
-                imageView_notification.setLayoutY(520);
-                imageView_settings.setLayoutX(40);
-                imageView_settings.setLayoutY(580);
-                imageView_profile.setLayoutX(40);
-                imageView_profile.setLayoutY(640);
-                imageView_add_post.setLayoutX(40);
-                imageView_add_post.setLayoutY(700);
+                    Rectangle details = new Rectangle();
+                    details.setWidth(300);
+                    details.setHeight(750);
+                    details.setFill(Color.WHITE);
+                    details.setX(0);
+                    details.setY(0);
 
 
 
-                Label insta=new Label("Pentagram");
-                insta.setLayoutX(80);
-                insta.setLayoutY(35);
-                insta.setStyle(" -fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:20; -fx-font-family:Georgia; -fx-font-weight:bold");
 
-                Button feed = new Button("Feed");
-                feed.setLayoutX(80);
-                feed.setLayoutY(345);
-                feed.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
-
-
-                Button explore = new Button("Explore");
-                explore.setLayoutX(80);
-                explore.setLayoutY(405);
-                explore.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+                    Image instag_logo = new Image("D:/Studies/sem5/java/pentagram/pics/insta_logo.PNG");
+                    Image home = new Image("D:/Studies/sem5/java/pentagram/pics/home.PNG");
+                    Image like = new Image("D:/Studies/sem5/java/pentagram/pics/like.JPG");
+                    Image add_post = new Image("D:/Studies/sem5/java/pentagram/pics/add_post.PNG");
+                    Image comment = new Image("D:/Studies/sem5/java/pentagram/pics/comment.PNG");
+                    Image search = new Image("D:/Studies/sem5/java/pentagram/pics/search.PNG");
+                    Image settings = new Image("D:/Studies/sem5/java/pentagram/pics/settings.PNG");
+                    Image saved = new Image("D:/Studies/sem5/java/pentagram/pics/saved.PNG");
+                    Image notification = new Image("D:/Studies/sem5/java/pentagram/pics/notification.PNG");
+                    Image profile = new Image("D:/Studies/sem5/java/pentagram/pics/profile.PNG");
+                    Image back_image = new Image("D:/Studies/sem5/java/pentagram/pics/back.PNG");
+                    Image next_image = new Image("D:/Studies/sem5/java/pentagram/pics/next.PNG");
 
 
-                Button collection = new Button("Collection");
-                collection.setLayoutX(80);
-                collection.setLayoutY(465);
-                collection.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+                    ImageView imageView_instag_logo = new ImageView(instag_logo);
+                    ImageView imageView_home = new ImageView(home);
+                    ImageView imageView_like = new ImageView(like);
+                    ImageView imageView_add_post = new ImageView(add_post);
+                    ImageView imageView_comment = new ImageView(comment);
+                    ImageView imageView_search = new ImageView(search);
+                    ImageView imageView_settings = new ImageView(settings);
+                    ImageView imageView_saved = new ImageView(saved);
+                    ImageView imageView_notification = new ImageView(notification);
+                    ImageView imageView_profile = new ImageView(profile);
+                    ImageView imageView_back = new ImageView(back_image);
+                    ImageView imageView_next = new ImageView(next_image);
 
 
-                Button notification_btn = new Button("Notification");
-                notification_btn.setLayoutX(80);
-                notification_btn.setLayoutY(525);
-                notification_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+                    int desiredWidth=40;
+                    int desiredHeight=40;
 
 
-                Button settings_btn = new Button("Settings");
-                settings_btn.setLayoutX(80);
-                settings_btn.setLayoutY(585);
-                settings_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+                    imageView_instag_logo.setFitWidth(desiredWidth);
+                    imageView_instag_logo.setFitHeight(desiredHeight);
+                    imageView_home.setFitWidth(desiredWidth);
+                    imageView_home.setFitHeight(desiredHeight);
+                    imageView_like.setFitWidth(desiredWidth);
+                    imageView_like.setFitHeight(desiredHeight);
+                    imageView_add_post.setFitWidth(desiredWidth);
+                    imageView_add_post.setFitHeight(desiredHeight);
+                    imageView_comment.setFitWidth(desiredWidth);
+                    imageView_comment.setFitHeight(desiredHeight);
+                    imageView_search.setFitWidth(desiredWidth);
+                    imageView_search.setFitHeight(desiredHeight);
+                    imageView_settings.setFitWidth(desiredWidth);
+                    imageView_settings.setFitHeight(desiredHeight);
+                    imageView_saved.setFitWidth(desiredWidth);
+                    imageView_saved.setFitHeight(desiredHeight);
+                    imageView_notification.setFitWidth(desiredWidth);
+                    imageView_notification.setFitHeight(desiredHeight);
+                    imageView_profile.setFitWidth(desiredWidth);
+                    imageView_profile.setFitHeight(desiredHeight);
+                    imageView_add_post.setFitWidth(desiredWidth);
+                    imageView_add_post.setFitHeight(desiredHeight);
+                    imageView_next.setFitWidth(50);
+                    imageView_next.setFitHeight(50);
+                    imageView_back.setFitWidth(50);
+                    imageView_back.setFitHeight(50);
 
 
-                Button profile_btn = new Button("Profile");
-                profile_btn.setLayoutX(80);
-                profile_btn.setLayoutY(645);
-                profile_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+                    imageView_instag_logo.setLayoutX(30);
+                    imageView_instag_logo.setLayoutY(30);
+                    imageView_home.setLayoutX(40);
+                    imageView_home.setLayoutY(340);
+                    imageView_search.setLayoutX(40);
+                    imageView_search.setLayoutY(400);
+                    imageView_saved.setLayoutX(40);
+                    imageView_saved.setLayoutY(460);
+                    imageView_notification.setLayoutX(40);
+                    imageView_notification.setLayoutY(520);
+                    imageView_settings.setLayoutX(40);
+                    imageView_settings.setLayoutY(580);
+                    imageView_profile.setLayoutX(40);
+                    imageView_profile.setLayoutY(640);
+                    imageView_add_post.setLayoutX(40);
+                    imageView_add_post.setLayoutY(700);
 
 
-                Button post = new Button("New post");
-                post.setLayoutX(80);
-                post.setLayoutY(705);
-                post.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+                    Label insta=new Label("Pentagram");
+                    insta.setLayoutX(80);
+                    insta.setLayoutY(35);
+                    insta.setStyle(" -fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:20; -fx-font-family:Georgia; -fx-font-weight:bold");
+
+                    Label user_name= new Label();
+                    user_name.setLayoutX(80);
+                    user_name.setLayoutY(300);
+                    user_name.setText(username_str);
+                    user_name.setStyle(" -fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:20; -fx-font-family:Georgia; -fx-font-weight:bold");
+
+                    Button feed = new Button("Feed");
+                    feed.setLayoutX(80);
+                    feed.setLayoutY(345);
+                    feed.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
 
 
-                Rectangle post1 = new Rectangle();
-                post1.setWidth(300);
-                post1.setHeight(300);
-                post1.setFill(Color.WHITE);
-                post1.setX(325);
-                post1.setY(25);
-
-                Rectangle post2 = new Rectangle();
-                post2.setWidth(300);
-                post2.setHeight(300);
-                post2.setFill(Color.WHITE);
-                post2.setX(650);
-                post2.setY(25);
-
-                Rectangle post3 = new Rectangle();
-                post3.setWidth(300);
-                post3.setHeight(300);
-                post3.setFill(Color.WHITE);
-                post3.setX(975);
-                post3.setY(25);
-
-                Rectangle post4 = new Rectangle();
-                post4.setWidth(300);
-                post4.setHeight(300);
-                post4.setFill(Color.WHITE);
-                post4.setX(325);
-                post4.setY(350);
-
-                Rectangle post5 = new Rectangle();
-                post5.setWidth(300);
-                post5.setHeight(300);
-                post5.setFill(Color.WHITE);
-                post5.setX(650);
-                post5.setY(350);
-
-                Rectangle post6 = new Rectangle();
-                post6.setWidth(300);
-                post6.setHeight(300);
-                post6.setFill(Color.WHITE);
-                post6.setX(975);
-                post6.setY(350);
+                    Button explore = new Button("Explore");
+                    explore.setLayoutX(80);
+                    explore.setLayoutY(405);
+                    explore.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
 
 
-                Button exit_btn = new Button();
-                exit_btn.setGraphic(imageView_back);
-                exit_btn.setLayoutX(325);
-                exit_btn.setLayoutY(680);
+                    explore.setOnAction(new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent Event) {
+                           Pane explore_pane = new Pane();
+                           explore_pane.setMaxHeight(700);
+                           explore_pane.setMaxWidth(700);
+                           explore_pane.setLayoutX(300);
+                           explore_pane.setLayoutY(25);
+                        }
+                    });
 
-                Button next_post_btn = new Button("");
-                next_post_btn.setGraphic(imageView_next);
-                next_post_btn.setLayoutX(1210);
-                next_post_btn.setLayoutY(680);
+                    Button collection = new Button("Collection");
+                    collection.setLayoutX(80);
+                    collection.setLayoutY(465);
+                    collection.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
 
-                home_pane.getChildren().addAll(details,imageView_instag_logo,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,explore,collection,post,notification_btn,settings_btn,profile_btn,insta,post1,post2,post3,post4,post5,post6,exit_btn,next_post_btn);
-                primaryStage.setScene(home_scene);
+
+                    Button notification_btn = new Button("Notification");
+                    notification_btn.setLayoutX(80);
+                    notification_btn.setLayoutY(525);
+                    notification_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                    Button settings_btn = new Button("Settings");
+                    settings_btn.setLayoutX(80);
+                    settings_btn.setLayoutY(585);
+                    settings_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                    Button profile_btn = new Button("Profile");
+                    profile_btn.setLayoutX(80);
+                    profile_btn.setLayoutY(645);
+                    profile_btn.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                    Button post = new Button("New post");
+                    post.setLayoutX(80);
+                    post.setLayoutY(705);
+                    post.setStyle("-fx-background-color:#FFFFFF; -fx-text-fill:#010000; -fx-font-size:16; -fx-font-family:Georgia" );
+
+
+                    Rectangle post1 = new Rectangle();
+                    post1.setWidth(300);
+                    post1.setHeight(300);
+                    post1.setFill(Color.WHITE);
+                    post1.setX(325);
+                    post1.setY(25);
+
+                    Rectangle post2 = new Rectangle();
+                    post2.setWidth(300);
+                    post2.setHeight(300);
+                    post2.setFill(Color.WHITE);
+                    post2.setX(650);
+                    post2.setY(25);
+
+                    Rectangle post3 = new Rectangle();
+                    post3.setWidth(300);
+                    post3.setHeight(300);
+                    post3.setFill(Color.WHITE);
+                    post3.setX(975);
+                    post3.setY(25);
+
+                    Rectangle post4 = new Rectangle();
+                    post4.setWidth(300);
+                    post4.setHeight(300);
+                    post4.setFill(Color.WHITE);
+                    post4.setX(325);
+                    post4.setY(350);
+
+                    Rectangle post5 = new Rectangle();
+                    post5.setWidth(300);
+                    post5.setHeight(300);
+                    post5.setFill(Color.WHITE);
+                    post5.setX(650);
+                    post5.setY(350);
+
+                    Rectangle post6 = new Rectangle();
+                    post6.setWidth(300);
+                    post6.setHeight(300);
+                    post6.setFill(Color.WHITE);
+                    post6.setX(975);
+                    post6.setY(350);
+
+
+                    Button exit_btn = new Button();
+                    exit_btn.setGraphic(imageView_back);
+                    exit_btn.setLayoutX(325);
+                    exit_btn.setLayoutY(680);
+
+                    Button next_post_btn = new Button("");
+                    next_post_btn.setGraphic(imageView_next);
+                    next_post_btn.setLayoutX(1210);
+                    next_post_btn.setLayoutY(680);
+
+                    post_pane.getChildren().addAll(post1,post2,post3,post4,post5,post6,exit_btn,next_post_btn);
+                    home_pane.getChildren().addAll(details,insta,explore,imageView_instag_logo,user_name,imageView_home,imageView_search,imageView_saved,imageView_notification,imageView_settings,imageView_profile,imageView_add_post,feed,collection,post,notification_btn,settings_btn,profile_btn,post_pane);
+                    primaryStage.setScene(home_scene);
+                }
+                else if(res.equals("false"))
+                {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Username and password doesn't match");
+                    alert.showAndWait();
+                    password_input.clear();
+                }
             }
         });
         Button forgot_btn = new Button("Forgot password?");
@@ -405,7 +455,7 @@ public class login extends Application {
                         String user_forget_str = user_forget_input.getText();
                         String school_str = school_input.getText();
                         String nick_str = nickname_input.getText();
-                        String res=DatabaseConfiguration.forgot_password(user_forget_str,school_str,nick_str);
+                        String res= DatabaseConfiguration_login.forgot_password(user_forget_str,school_str,nick_str);
                         if(res.equals("true"))
                         {
                             Alert alert = new Alert(AlertType.INFORMATION);
@@ -493,7 +543,7 @@ public class login extends Application {
                                     String new_password_str = new_password_input.getText();
                                     String confirm_password_str = confirm_password_input.getText();
                                     if(confirm_password_str.equals(new_password_str)) {
-                                        String res=DatabaseConfiguration.change_password(user_change_str, new_password_str);
+                                        String res= DatabaseConfiguration_login.change_password(user_change_str, new_password_str);
                                         if (res.equals("true")) {
                                             Alert alert = new Alert(AlertType.INFORMATION);
                                             alert.setTitle("Information Dialog");
@@ -804,33 +854,42 @@ public class login extends Application {
                                 String insta_dp_str=insta_dp_input.getText();
                                 String scl_name_str=scl_input.getText();
                                 String nickname_str=nick_name_input.getText();
-                                if(DatabaseConfiguration.Signup_backend(mailid_str,fullname_str,signup_username_str,signup_password_str,dob,bio_str,insta_dp_str,scl_name_str,nickname_str))
+                                if(DatabaseConfiguration_login.check_user(signup_username_str))
                                 {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    Alert alert = new Alert(AlertType.WARNING);
                                     alert.setTitle("Information Dialog");
                                     alert.setHeaderText(null);
-                                    alert.setContentText("User registration successful!");
+                                    alert.setContentText("Username already exist");
                                     alert.showAndWait();
                                 }
                                 else
                                 {
-                                    Alert alert = new Alert(AlertType.ERROR);
-                                    alert.setTitle("Retry");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("We are encountering issue in database,Please try again!");
-                                    alert.showAndWait();
+                                    if(DatabaseConfiguration_login.Signup_backend(mailid_str,fullname_str,signup_username_str,signup_password_str,dob,bio_str,insta_dp_str,scl_name_str,nickname_str))
+                                    {
+                                        Alert alert = new Alert(AlertType.INFORMATION);
+                                        alert.setTitle("Information Dialog");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("User registration successful!");
+                                        alert.showAndWait();
+                                    }
+                                    else
+                                    {
+                                        Alert alert = new Alert(AlertType.ERROR);
+                                        alert.setTitle("Retry");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("We are encountering issue in database,Please try again!");
+                                        alert.showAndWait();
+                                    }
+                                    root.getChildren().clear();
+                                    signup_btn.setText("Doesn't have an account? Create account");
+                                    signup_btn.setLayoutX(160);
+                                    signup_btn.setLayoutY(500);
+                                    signup_btn.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:15");
+                                    input_pane.getChildren().remove(signup_btn);
+                                    input_pane.getChildren().add(signup_btn);
+                                    root.getChildren().add(input_pane);
                                 }
-                                root.getChildren().clear();
-                                signup_btn.setText("Doesn't have an account? Create account");
-                                signup_btn.setLayoutX(160);
-                                signup_btn.setLayoutY(500);
-                                signup_btn.setStyle(" -fx-text-fill:#2C165C; -fx-font-size:15");
-                                input_pane.getChildren().remove(signup_btn);
-                                input_pane.getChildren().add(signup_btn);
-                                root.getChildren().add(input_pane);
-
                             }
-
                         });
 
                         signup_btn.setText("Back");

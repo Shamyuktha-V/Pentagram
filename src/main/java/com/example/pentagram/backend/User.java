@@ -1,6 +1,7 @@
 package com.example.pentagram.backend;
 
 import java.time.LocalDate;
+import javafx.scene.image.Image;
 
 public class User {
     private int id;
@@ -97,5 +98,23 @@ public class User {
                 ", dob=" + dob +
                 ", bio='" + bio + '\'' +
                 '}';
+    }
+}
+
+class ProfileData {
+    private Image profilePhoto;
+    private String username;
+
+    public ProfileData(Image profilePhoto, String username) {
+        this.profilePhoto = profilePhoto;
+        this.username = username;
+    }
+
+    public Image getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

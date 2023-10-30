@@ -4,17 +4,57 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 import java.sql.*;
-import org.opencv.core.Core;
+
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.imgcodecs.Imgcodecs;
 
-public class DatabaseConfiguration {
+public class DatabaseConfiguration_login {
 
     static {
         // Set the java.library.path to include the directory containing the OpenCV library
         // Load the OpenCV library
         System.loadLibrary("opencv_java480"); // Replace with the correct library name
+    }
+    public static boolean check_user(String username)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pentagram", "root", "Shamu@123");
+            preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE username=?");
+            preparedStatement.setString(1, username);
+            resultset = preparedStatement.executeQuery();
+            if (!resultset.isBeforeFirst()) {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources in reverse order of their creation
+            try {
+                if (resultset != null) {
+                    resultset.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public static boolean Signup_backend(String mailid_str, String fullname_str, String signup_username_str, String signup_password_str, LocalDate dob, String bio_str, String insta_dp_str,String scl_name_str,String nickname_str)
@@ -151,8 +191,54 @@ public class DatabaseConfiguration {
             }
         }
         return "false";
+    }
+
+    public static String check_login(String username,String password)
+    {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pentagram", "root", "Shamu@123");
+            preparedStatement = connection.prepareStatement("SELECT password FROM user WHERE username=?");
+            preparedStatement.setString(1, username);
+            resultset = preparedStatement.executeQuery();
+            if (!resultset.isBeforeFirst()) {
+                return "user";
+            } else {
+                while (resultset.next()) {
+                    String retrievedPassword = resultset.getString("password");
+                    if (retrievedPassword.equals(password)) {
+                        return "true";
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            // Handle the exception here
+        } finally {
+            // Close the resources in reverse order of their creation
+            try {
+                if (resultset != null) {
+                    resultset.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return "false";
 
     }
+
     public static void main(String[] args) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
